@@ -2,8 +2,11 @@
 # Last tested with p15.06.01
 #
 
-ROOTLIBS = `/cvmfs/cms.cern.ch/slc6_amd64_gcc530/lcg/root/6.08.07/bin/root-config --libs`
-OPTCOMP  = `/cvmfs/cms.cern.ch/slc6_amd64_gcc530/lcg/root/6.08.07/bin/root-config --cflags`
+OPTCOMP= $(shell root-config --cflags)
+ROOTLIBS    = $(shell root-config --libs)
+
+#ROOTLIBS = `/cvmfs/cms.cern.ch/slc6_amd64_gcc530/lcg/root/6.08.07/bin/root-config --libs`
+#OPTCOMP  = `/cvmfs/cms.cern.ch/slc6_amd64_gcc530/lcg/root/6.08.07/bin/root-config --cflags`
 
 SPECIALFLAGS= --exceptions
 CFLAGS = -I. 
