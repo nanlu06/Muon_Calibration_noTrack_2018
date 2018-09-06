@@ -38,7 +38,7 @@ void NtuplerReader::Loop( TString path, TString num, int nvtx_sel )
    tree->Branch("ecal3x3", &ecal3x3, "ecal3x3/D");
    tree->Branch("ecal5x5", &ecal5x5, "ecal5x5/D");
    tree->Branch("ecal15x15", &ecal15x15, "ecal15x15/D");
-   tree->Branch("ecal25x25", &ecal25x25, "ecal15x15/D");
+   tree->Branch("ecal25x25", &ecal25x25, "ecal25x25/D");
    tree->Branch("eEcal_o", &eEcal_o, "eEcal_o/D");
    tree->Branch("Ecal_label_o", &Ecal_label_o, "Ecal_label_o/D");
    tree->Branch("ISOR04", &ISOR04, "ISOR04/D");
