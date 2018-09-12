@@ -20,14 +20,9 @@ process.load("Calibration.HcalCalibAlgos.hcalHBHEMuon_cfi")
 process.maxEvents = cms.untracked.PSet( input = cms.untracked.int32(-1) )
 process.source = cms.Source("PoolSource",
     fileNames = cms.untracked.vstring(
-        'root://cms-xrd-global.cern.ch///store/data/Run2018C/SingleMuon/ALCARECO/HcalCalHBHEMuonFilter-PromptReco-v3/000/319/849/00000/B4EAF9AC-488C-E811-AC9F-FA163E31F891.root'
-        #'root://cms-xrd-global.cern.ch///store/data/Run2018C/DoubleMuonLowPU/RAW-RECO/LogError-PromptReco-v2/000/319/462/00000/D8D67FB5-8C86-E811-BB68-FA163E106838.root'
-        #'root://cms-xrd-global.cern.ch///store/data/Run2018C/DoubleMuonLowPU/ALCARECO/MuAlZMuMu-PromptReco-v2/000/319/488/00000/A414E3F8-C187-E811-87C6-FA163E75C6E8.root'
-        #'root://cms-xrd-global.cern.ch//store/mc/RunIIFall17DRStdmix/SingleMuon_13_30_HEP17/GEN-SIM-RECO/NoPU_94X_mc2017_realistic_v11-v2/60000/0C2598E5-BB32-E811-8606-FA163EBF2E80.root'
-        #'root://cms-xrd-global.cern.ch//store/data/Run2017B/SingleMuon/RECO/PromptReco-v2/000/298/678/00000/C0C0C0B0-A466-E711-AE46-02163E019E8C.root',
-#       'file:/afs/cern.ch/work/a/amkalsi/public/ForSunandaDa/C0C0C0B0-A466-E711-AE46-02163E019E8C.root',
+        #'root://cms-xrd-global.cern.ch///store/data/Run2018C/SingleMuon/ALCARECO/HcalCalHBHEMuonFilter-PromptReco-v3/000/319/849/00000/B4EAF9AC-488C-E811-AC9F-FA163E31F891.root'
+        'root://cms-xrd-global.cern.ch//store/mc/RunIIFall17DRStdmix/SingleMuon_13_30_HEP17/GEN-SIM-RECO/NoPU_94X_mc2017_realistic_v11-v2/60000/0C2598E5-BB32-E811-8606-FA163EBF2E80.root'
 #       'root://xrootd.unl.edu//store/data/Run2017B/SingleMuon/RECO/PromptReco-v2/000/298/678/00000/C0C0C0B0-A466-E711-AE46-02163E019E8C.root'
-#        'root://xrootd.unl.edu//store/mc/Phys14DR/DYToMuMu_M-50_Tune4C_13TeV-pythia8/GEN-SIM-RECO/PU20bx25_tsg_castor_PHYS14_25_V1-v1/10000/184C1AC9-A775-E411-9196-002590200824.root'
         )
                             )
 
