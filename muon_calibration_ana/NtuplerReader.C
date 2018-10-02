@@ -19,6 +19,8 @@ void NtuplerReader::Loop( TString path, TString num, int nvtx_sel )
 
    double chg, ecal1x1, ecal3x3,ecal5x5, ecal15x15,ecal25x25, weight, ISOR04, p, energy, pt, eta, eEcal_o, phi, pt2, eta2, phi2, e1dx, e2dx, e3dx, e4dx, e5dx, e6dx, e7dx, e1, e2, e3, e4, e5, e6, e7, e1_o, e2_o, e3_o, e4_o, e5_o, e6_o, e7_o;
 
+   vector<double> pt_genMuon,eta_genMuon,phi_genMuon,energy_genMuon;
+
    double e1r, e12r, e123r, e23r, e1s, e15, e2r, e2s, e25, e3r, e3s, e35, e4r, e4s, e45, e5r, e5s, e55, e6r, e6s, e65, e7r, e7s, e75;
 
    double e1r_o, e12r_o, e123r_o, e23r_o, e1s_o, e15_o, e2r_o, e2s_o, e25_o, e3r_o, e3s_o, e35_o, e4r_o, e4s_o, e45_o, e5r_o, e5s_o, e55_o, e6r_o, e6s_o, e65_o, e7r_o, e7s_o, e75_o;
@@ -52,7 +54,10 @@ void NtuplerReader::Loop( TString path, TString num, int nvtx_sel )
    tree->Branch("phi", &phi, "phi/D");
    tree->Branch("charge", &chg, "charge/D");
    tree->Branch("p", &p, "p/D");
-
+   tree->Branch("eta_genMuon", &eta_genMuon);
+   tree->Branch("pt_genMuon", &pt_genMuon);
+   tree->Branch("energy_genMuon", &energy_genMuon);
+   tree->Branch("phi_genMuon", &phi_genMuon);
    tree->Branch("e1", &e1, "e1/D");
    tree->Branch("e2", &e2, "e2/D");
    tree->Branch("e3", &e3, "e3/D");
@@ -106,7 +111,6 @@ void NtuplerReader::Loop( TString path, TString num, int nvtx_sel )
    if (fChain == 0) return;
 
    Long64_t nentries = fChain->GetEntriesFast();
-
    //Long64_t nentries = 500;
 
    Long64_t nbytes = 0, nb = 0;
@@ -115,17 +119,26 @@ void NtuplerReader::Loop( TString path, TString num, int nvtx_sel )
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
+      pt_genMuon.clear();
+      phi_genMuon.clear();
+      eta_genMuon.clear();
+      energy_genMuon.clear();
       if(jentry%5000==0) std::cout <<"events: "<<jentry<<std::endl;
-
       int nmuon = IsolationR04->size();
-
+      int nGenMuon=pt_of_genMuon->size();
+      for(int k = 0; k<nGenMuon; k ++){
+	pt_genMuon.push_back(pt_of_genMuon->at(k));
+	phi_genMuon.push_back(phi_of_genMuon->at(k));
+	eta_genMuon.push_back(eta_of_genMuon->at(k));
+	energy_genMuon.push_back(energy_of_genMuon->at(k));
+      }
       for(int k = 0; k<nmuon; k ++){
       
            if(nvtx_sel==-1){
-              if((!(hcal_cellHot->at(k))) || (!(matchedId->at(k))) || (MuonIsTight->at(k)==0) || (IsolationR04->at(k)>=0.15) || (!(hcal_cellHot_o->at(k))) || (pt_of_muon->at(k))<20 ) continue;
+              if((!(hcal_cellHot->at(k))) || (!(matchedId->at(k))) || (MuonIsTight->at(k)==0) || (IsolationR04->at(k)>=0.15) || /*(!(hcal_cellHot_o->at(k))) ||*/ (pt_of_muon->at(k))<20 ) continue;
            }
            else{
-               if((!(hcal_cellHot->at(k))) || (!(matchedId->at(k))) || (GoodVertex!= nvtx_sel) || (MuonIsTight->at(k)==0) || (IsolationR04->at(k)>=0.15) || (!(hcal_cellHot_o->at(k))) || (pt_of_muon->at(k))<20 ) continue;
+	     if((!(hcal_cellHot->at(k))) || (!(matchedId->at(k))) || (GoodVertex!= nvtx_sel) || (MuonIsTight->at(k)==0) || (IsolationR04->at(k)>=0.15) || /*(!(hcal_cellHot_o->at(k))) ||*/ (pt_of_muon->at(k))<20 ) continue;
            }
            bool match1 = hcal_depthMatch1->at(k);
            bool match2 = hcal_depthMatch2->at(k);
@@ -136,6 +149,9 @@ void NtuplerReader::Loop( TString path, TString num, int nvtx_sel )
            bool match7 = hcal_depthMatch7->at(k);
            if(!(match1 && match2 && match3 && match4 && match5 && match6 && match7)) continue;
 
+	   //for(int j = 0; j<nGenMuon; j ++){
+	   //if((pt_of_genMuon-pt_of_muon
+	   //}
            run = Run_No;
            event = Event_No;
            n_nvtx_good = GoodVertex;
@@ -150,6 +166,7 @@ void NtuplerReader::Loop( TString path, TString num, int nvtx_sel )
            chg = charge_of_muon->at(k);
            energy = energy_of_muon->at(k);
            p = p_of_muon->at(k);
+	   
            ecal1x1 = ecal_1x1->at(k);
            ecal3x3 = ecal_3x3->at(k);
            ecal5x5 = ecal_5x5->at(k);
@@ -216,8 +233,9 @@ void NtuplerReader::Loop( TString path, TString num, int nvtx_sel )
            e6r_o = e6s_o/e6_o;
            e7r_o = e7s_o/e7_o;
 
-           tree->Fill();
-     }
+      }
+      tree->Fill();
+      
    }
    outputFile->cd();
    tree->Write();

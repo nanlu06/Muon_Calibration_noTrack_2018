@@ -83,6 +83,10 @@ public :
    vector<bool>    *matchedId;
    vector<bool>    *hcal_cellHot;
    vector<bool>    *hcal_cellHot_o;
+   vector<double>  *pt_of_genMuon;
+   vector<double>  *eta_of_genMuon;
+   vector<double>  *phi_of_genMuon;
+   vector<double>  *energy_of_genMuon;
    vector<double>  *ecal_1x1;
    vector<double>  *ecal_3x3;
    vector<double>  *ecal_5x5;
@@ -371,6 +375,10 @@ public :
    TBranch        *b_matchedId;   //!
    TBranch        *b_hcal_cellHot;   //!
    TBranch        *b_hcal_cellHot_o;   //!
+   TBranch        *b_pt_of_genMuon;//!
+   TBranch        *b_eta_of_genMuon;//!
+   TBranch        *b_phi_of_genMuon;//!
+   TBranch        *b_energy_of_genMuon;//!
    TBranch        *b_ecal_1x1;   //!
    TBranch        *b_ecal_3x3;   //!
    TBranch        *b_ecal_5x5;   //!
@@ -715,6 +723,10 @@ void NtuplerReader::Init(TTree *tree)
    matchedId = 0;
    hcal_cellHot = 0;
    hcal_cellHot_o = 0;
+   pt_of_genMuon = 0;//!
+   eta_of_genMuon = 0;//!
+   phi_of_genMuon = 0;//!
+   energy_of_genMuon = 0;//!
    ecal_1x1 = 0;
    ecal_3x3 = 0;
    ecal_5x5 = 0;
@@ -1007,6 +1019,10 @@ void NtuplerReader::Init(TTree *tree)
    fChain->SetBranchAddress("matchedId", &matchedId, &b_matchedId);
    fChain->SetBranchAddress("hcal_cellHot", &hcal_cellHot, &b_hcal_cellHot);
    fChain->SetBranchAddress("hcal_cellHot_o", &hcal_cellHot_o, &b_hcal_cellHot_o);
+   fChain->SetBranchAddress("pt_of_genMuon", &pt_of_genMuon, &b_pt_of_genMuon);
+   fChain->SetBranchAddress("eta_of_genMuon", &eta_of_genMuon, &b_eta_of_genMuon);
+   fChain->SetBranchAddress("phi_of_genMuon", &phi_of_genMuon, &b_phi_of_genMuon);
+   fChain->SetBranchAddress("energy_of_genMuon", &energy_of_genMuon, &b_energy_of_genMuon);
    fChain->SetBranchAddress("ecal_1x1", &ecal_1x1, &b_ecal_1x1);
    fChain->SetBranchAddress("ecal_3x3", &ecal_3x3, &b_ecal_3x3);
    fChain->SetBranchAddress("ecal_5x5", &ecal_5x5, &b_ecal_5x5);

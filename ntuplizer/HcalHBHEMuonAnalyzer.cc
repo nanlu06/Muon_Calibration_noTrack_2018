@@ -26,7 +26,7 @@
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/Scalers/interface/LumiScalers.h"
-
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 //////////////trigger info////////////////////////////////////
 
 #include "DataFormats/Common/interface/TriggerResults.h"
@@ -82,7 +82,7 @@ private:
   void beginJob() override;
   void analyze(edm::Event const&, edm::EventSetup const&) override;
   void beginRun(edm::Run const&, edm::EventSetup const&) override;
-  void endRun(edm::Run const&, edm::EventSetup const&) override {}
+  void endRun(edm::Run const&, edm::EventSetup const&) override ;
   void   clearVectors();
   int    matchId(const HcalDetId&, const HcalDetId&);
   double activeLength(const DetId&);
@@ -98,7 +98,7 @@ private:
   edm::Service<TFileService> fs;
   const edm::InputTag        hlTriggerResults_;
   const edm::InputTag        labelEBRecHit_, labelEERecHit_, labelHBHERecHit_, labelLumiScalers_;
-  const std::string          labelVtx_, labelMuon_, fileInCorr_;
+  const std::string          labelVtx_, labelMuon_, labelGenPart_,fileInCorr_;
   const std::vector<std::string> triggers_;
   const int                  verbosity_, useRaw_;
   const bool                 unCorrect_, collapseDepth_, isItPlan1_;
@@ -118,7 +118,7 @@ private:
   edm::EDGetTokenT<HBHERecHitCollection>                  tok_HBHE_;
   edm::EDGetTokenT<reco::MuonCollection>                  tok_Muon_;
   edm::EDGetTokenT<LumiScalersCollection>                 lumiScalersSrc_; 
-
+  edm::EDGetTokenT<reco::GenParticleCollection>           tok_GenPart_;
   //////////////////////////////////////////////////////
   static const int          depthMax_ = 7;
   TTree                    *tree_;
@@ -131,6 +131,7 @@ private:
   std::vector<double>       isolationR04_;
   std::vector<double>       ecalEnergy_, hcalEnergy_, hoEnergy_;
   std::vector<bool>         matchedId_, hcalHot_, o_hcalHot_;
+  std::vector<double>       genMuon_pt_,genMuon_eta_,genMuon_phi_,genMuon_energy_;
   std::vector<double>       eEcal_, Ecal_label_, ecal1x1Energy_, ecal3x3Energy_, ecal5x5Energy_, ecal15x15Energy_, ecal25x25Energy_, hcal1x1Energy_;
   std::vector<unsigned int> ecalDetId_, hcalDetId_, ehcalDetId_;
   std::vector<int>          hcal_ieta_, hcal_iphi_, o_hcal_ieta_, o_hcal_iphi_;
@@ -161,9 +162,8 @@ private:
   std::vector<HcalDDDRecConstants::HcalActiveLength> actHB, actHE;
   std::map<DetId,double>    corrValue_;
   ////////////////////////////////////////////////////////////
-  
+  TH1F *h_cutflow = new TH1F("h_cutflow","Cutflow distribution",10,0,11);;
 };
-
 HcalHBHEMuonAnalyzer::HcalHBHEMuonAnalyzer(const edm::ParameterSet& iConfig) :
   hlTriggerResults_(iConfig.getParameter<edm::InputTag>("hlTriggerResults")),
   labelEBRecHit_(iConfig.getParameter<edm::InputTag>("labelEBRecHit")),
@@ -172,6 +172,7 @@ HcalHBHEMuonAnalyzer::HcalHBHEMuonAnalyzer(const edm::ParameterSet& iConfig) :
   labelLumiScalers_(iConfig.getParameter<edm::InputTag>("labelLumiScalers")),
   labelVtx_(iConfig.getParameter<std::string>("labelVertex")),
   labelMuon_(iConfig.getParameter<std::string>("labelMuon")),
+  labelGenPart_(iConfig.getParameter<std::string>("labelGenPart")),
   fileInCorr_(iConfig.getUntrackedParameter<std::string>("fileInCorr","")),
   triggers_(iConfig.getParameter<std::vector<std::string>>("triggers")),
   verbosity_(iConfig.getUntrackedParameter<int>("verbosity",0)),
@@ -203,20 +204,23 @@ HcalHBHEMuonAnalyzer::HcalHBHEMuonAnalyzer(const edm::ParameterSet& iConfig) :
   if (modnam.empty()) {
     tok_Vtx_      = consumes<reco::VertexCollection>(labelVtx_);
     tok_Muon_     = consumes<reco::MuonCollection>(labelMuon_);
+    tok_GenPart_     = consumes<reco::GenParticleCollection>(labelGenPart_);
     edm::LogVerbatim("HBHEMuon")  << "Labels used: Trig " << hlTriggerResults_
 				  << " Vtx " << labelVtx_ << " EB " 
 				  << labelEBRecHit_ << " EE "
 				  << labelEERecHit_ << " HBHE " 
-				  << labelHBHERecHit_ << " MU " << labelMuon_;
+				  << labelHBHERecHit_ << " MU " << labelMuon_<< "GenPart " << labelGenPart_;
   } else {
     tok_Vtx_      = consumes<reco::VertexCollection>(edm::InputTag(modnam,labelVtx_,procnm));
     tok_Muon_     = consumes<reco::MuonCollection>(edm::InputTag(modnam,labelMuon_,procnm));
+    tok_GenPart_     = consumes<reco::GenParticleCollection>(edm::InputTag(modnam,labelGenPart_,procnm));
     edm::LogVerbatim("HBHEMuon")   << "Labels used Trig " << hlTriggerResults_
 				   << "\n  Vtx  " << edm::InputTag(modnam,labelVtx_,procnm)
 				   << "\n  EB   " << labelEBRecHit_
 				   << "\n  EE   " << labelEERecHit_
 				   << "\n  HBHE " << labelHBHERecHit_
-				   << "\n  MU   " << edm::InputTag(modnam,labelMuon_,procnm);
+				   << "\n  MU   " << edm::InputTag(modnam,labelMuon_,procnm)
+				   << "\n GenPart "<<edm::InputTag(modnam,labelGenPart_,procnm);
   }
 
   if (!fileInCorr_.empty()) {
@@ -348,6 +352,8 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
   edm::Handle<reco::MuonCollection> _Muon;
   iEvent.getByToken(tok_Muon_, _Muon);
 
+  edm::Handle<reco::GenParticleCollection> _GenPart;
+  iEvent.getByToken(tok_GenPart_, _GenPart);
   // require a good vertex
   math::XYZPoint pvx;
   goodVertex_ = 0;
@@ -413,6 +419,7 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
         double isoR04 = ((RecMuon->pfIsolationR04().sumChargedHadronPt + std::max(0.,RecMuon->pfIsolationR04().sumNeutralHadronEt + RecMuon->pfIsolationR04().sumPhotonEt - (0.5 *RecMuon->pfIsolationR04().sumPUPt))) / RecMuon->pt()) ;
         if ((RecMuon->pt()<20.0) || (!trackID.okHCAL) || !tmpmatch || fabs(ieta)<21 || (!muon_is_tight) || isoR04>0.15) continue;
 
+	h_cutflow->Fill(0); //initial muon selections
         TLorentzVector lvMuon;
         lvMuon.SetPtEtaPhiM(RecMuon->pt(), RecMuon->eta(), RecMuon->phi(), 0.10566);
 
@@ -426,7 +433,7 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
             TLorentzVector Muon_tmp;
             Muon_tmp.SetPtEtaPhiM(iMuon->pt(), iMuon->eta(), iMuon->phi(), 0.10566);
             double dimuon_M = (Muon_tmp + lvMuon).M();
-             if(fabs(dimuon_M-91.188)< 5. ){
+             if(fabs(dimuon_M-91.188)< 2. ){
                   Zmm=true;
                   break;
              }
@@ -434,6 +441,7 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
          }
         }
         if(Zmm) continue;
+	h_cutflow->Fill(1); // Zmm cut
         muon_is_good_.push_back(RecMuon->isPFMuon());
         muon_global_.push_back(RecMuon->isGlobalMuon());
         muon_tracker_.push_back(RecMuon->isTrackerMuon());
@@ -449,6 +457,14 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
         hcalEnergy_.push_back(RecMuon->calEnergy().hadS9);
         hoEnergy_.push_back(RecMuon->calEnergy().hoS9);
 
+	for (reco::GenParticleCollection::const_iterator iGenPart = _GenPart->begin(); iGenPart!= _GenPart->end(); ++iGenPart)  {
+	  if(fabs(iGenPart->pdgId())==13){
+	    genMuon_pt_.push_back(iGenPart->pt());
+	    genMuon_eta_.push_back(iGenPart->eta());
+	    genMuon_phi_.push_back(iGenPart->phi());
+	    genMuon_energy_.push_back(iGenPart->energy());
+	  }
+	}
         double eEcal1x1(0), eEcal3x3(0),eEcal5x5(0), eEcal15x15(0), eEcal25x25(0), eHcal(0), activeLengthTot(0); //activeLengthHotTot(0);
         double eHcalDepth[depthMax_], eHcalDepthHot[depthMax_];
         double eHcalDepth1[depthMax_], eHcalDepth2[depthMax_], eHcalDepth3[depthMax_], eHcalDepth4[depthMax_], eHcalDepth5[depthMax_], eHcalDepth6[depthMax_], eHcalDepth7[depthMax_], eHcalDepth8[depthMax_];
@@ -853,6 +869,7 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
 #endif
     tree_->Fill();
   }
+  
 }
 
 // ------------ method called once each job just before starting event loop  ------------
@@ -887,7 +904,10 @@ void HcalHBHEMuonAnalyzer::beginJob() {
   tree_->Branch("matchedId",                        &matchedId_);
   tree_->Branch("hcal_cellHot",                     &hcalHot_);
   tree_->Branch("hcal_cellHot_o",                   &o_hcalHot_);
- 
+  tree_->Branch("pt_of_genMuon",                    &genMuon_pt_);
+  tree_->Branch("eta_of_genMuon",                   &genMuon_eta_);
+  tree_->Branch("phi_of_genMuon",                   &genMuon_phi_);
+  tree_->Branch("energy_of_genMuon",                &genMuon_energy_);
   tree_->Branch("ecal_1x1",                         &ecal1x1Energy_); 
   tree_->Branch("ecal_3x3",                         &ecal3x3Energy_);
   tree_->Branch("ecal_5x5",                         &ecal5x5Energy_);
@@ -1054,6 +1074,8 @@ void HcalHBHEMuonAnalyzer::beginJob() {
 
   tree_->Branch("hltresults",                       &hltresults_);
   tree_->Branch("all_triggers",                     &all_triggers_);
+  tree_->Branch("h_cutflow","TH1F",&h_cutflow,32000,0);
+  
 }
 
 // ------------ method called when starting to processes a run  ------------
@@ -1148,8 +1170,11 @@ void HcalHBHEMuonAnalyzer::beginRun(edm::Run const& iRun, edm::EventSetup const&
       }
     }
   }
+  h_cutflow->Write();
 }
-
+void HcalHBHEMuonAnalyzer::endRun(edm::Run const& iRun, edm::EventSetup const& iSetup) {
+  h_cutflow->Write();
+}
 // ------------ method fills 'descriptions' with the allowed parameters for the module  ------------
 void HcalHBHEMuonAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& descriptions) {
   edm::ParameterSetDescription desc;
@@ -1160,6 +1185,7 @@ void HcalHBHEMuonAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& desc
   desc.add<edm::InputTag>("labelLumiScalers", edm::InputTag("scalersRawToDigi"));
   desc.add<std::string>("labelVertex","offlinePrimaryVertices");
   desc.add<std::string>("labelMuon","muons");
+  desc.add<std::string>("labelGenPart","genParticles");
   std::vector<std::string> trig = {"HLT_IsoMu17","HLT_IsoMu20",
 				   "HLT_IsoMu24","HLT_IsoMu27",
 				   "HLT_Mu45","HLT_Mu50"};
@@ -1208,6 +1234,12 @@ void HcalHBHEMuonAnalyzer::clearVectors() {
   matchedId_.clear();
   hcalHot_.clear();
   o_hcalHot_.clear();
+  
+  genMuon_pt_.clear();
+  genMuon_eta_.clear();
+  genMuon_phi_.clear();
+  genMuon_energy_.clear();
+
   ecal1x1Energy_.clear();
   ecal3x3Energy_.clear();
   ecal5x5Energy_.clear();
