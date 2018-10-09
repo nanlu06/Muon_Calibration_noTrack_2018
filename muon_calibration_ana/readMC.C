@@ -10,7 +10,7 @@ int main(int argc, const char* argv[]) {
        TChain *mc = new TChain("hcalHBHEMuon/TREE");
 
        TString listname = argv[1]; //"preselection_Data_Run2018A_PromptReco_v1_json1.list";
-       TString num = argv[2];
+       TString prefix = argv[2];
        TString nvtx_sel_str = argv[3];
        TString path = argv[4];
        int nvtx_sel = nvtx_sel_str.Atoi();
@@ -28,7 +28,7 @@ int main(int argc, const char* argv[]) {
        std::cerr << "Added file: " << filename << std::endl;
        }
        NtuplerReader *readMC = new NtuplerReader(mc);
-       readMC->Loop(path, num,nvtx_sel);
+       readMC->Loop(path, prefix, nvtx_sel);
        listfile.close();
 
         //char file[100];
