@@ -8,12 +8,12 @@
 
 using namespace std;
 
-void NtuplerReader::Loop( TString path, TString num, int nvtx_sel )
+void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 {
 
    TString nvtx_sel_Str;
    nvtx_sel_Str.Form("%d",nvtx_sel);
-   TFile* outputFile=TFile::Open(path+"/tree_Mmumu_nvtx_sel"+nvtx_sel_Str+"_split"+num+".root","recreate");
+   TFile* outputFile=TFile::Open(path+"/"+prefix+"_nvtx_sel"+nvtx_sel_Str+".root","recreate");
 
    TTree *tree = new TTree("tree","tree");
 
@@ -111,7 +111,6 @@ void NtuplerReader::Loop( TString path, TString num, int nvtx_sel )
    if (fChain == 0) return;
 
    Long64_t nentries = fChain->GetEntriesFast();
-   //Long64_t nentries = 500;
 
    Long64_t nbytes = 0, nb = 0;
    for (Long64_t jentry=0; jentry<nentries;jentry++) {
