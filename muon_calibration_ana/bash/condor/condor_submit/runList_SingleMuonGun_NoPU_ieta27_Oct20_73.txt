@@ -1,5 +1,0 @@
-/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/SingleMuonPt_20GeV_eta_0_3/SingleMuonGun_NoPU_ieta27_Oct20/181021_192040/0000/Validation_428.root
-/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/SingleMuonPt_20GeV_eta_0_3/SingleMuonGun_NoPU_ieta27_Oct20/181021_192040/0000/Validation_429.root
-/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/SingleMuonPt_20GeV_eta_0_3/SingleMuonGun_NoPU_ieta27_Oct20/181021_192040/0000/Validation_43.root
-/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/SingleMuonPt_20GeV_eta_0_3/SingleMuonGun_NoPU_ieta27_Oct20/181021_192040/0000/Validation_430.root
-/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/SingleMuonPt_20GeV_eta_0_3/SingleMuonGun_NoPU_ieta27_Oct20/181021_192040/0000/Validation_431.root

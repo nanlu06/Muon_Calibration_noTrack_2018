@@ -1,5 +1,0 @@
-/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_NoPU_ieta27_Oct20/181021_191223/0000/Validation_28.root
-/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_NoPU_ieta27_Oct20/181021_191223/0000/Validation_280.root
-/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_NoPU_ieta27_Oct20/181021_191223/0000/Validation_281.root
-/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_NoPU_ieta27_Oct20/181021_191223/0000/Validation_282.root
-/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_NoPU_ieta27_Oct20/181021_191223/0000/Validation_283.root
