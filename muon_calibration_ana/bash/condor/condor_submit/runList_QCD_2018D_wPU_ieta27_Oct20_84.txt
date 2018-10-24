@@ -1,0 +1,10 @@
+/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_856.root
+/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_857.root
+/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_858.root
+/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_859.root
+/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_86.root
+/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_860.root
+/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_861.root
+/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_862.root
+/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_863.root
+/eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_864.root

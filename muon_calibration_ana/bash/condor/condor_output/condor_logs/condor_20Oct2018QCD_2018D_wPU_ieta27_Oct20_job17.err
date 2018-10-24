@@ -1,0 +1,234 @@
+Opened: /afs/cern.ch/work/i/idutta/private/HCAL_muALCA/CMSSW_10_1_6/src/Muon_Calibration_noTrack_2018/muon_calibration_ana/bash/condor/condor_submit/runList_QCD_2018D_wPU_ieta27_Oct20_17.txt
+Added file: /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_252.root
+Added file: /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_253.root
+Added file: /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_254.root
+Added file: /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_255.root
+Added file: /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_256.root
+Added file: /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_257.root
+Added file: /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_258.root
+Added file: /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_259.root
+Added file: /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_26.root
+Added file: /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_260.root
+Warning in <TClass::Init>: no dictionary for class ROOT::TIOFeatures is available
+Error in <TTree::SetBranchStatus>: unknown branch -> MuonIsMedium
+Error in <TTree::SetBranchStatus>: unknown branch -> muon_trkKink
+Error in <TTree::SetBranchStatus>: unknown branch -> muon_chi2LocalPosition
+Error in <TTree::SetBranchStatus>: unknown branch -> muon_segComp
+Error in <TTree::SetBranchStatus>: unknown branch -> TrackerLayer
+Error in <TTree::SetBranchStatus>: unknown branch -> NumPixelLayers
+Error in <TTree::SetBranchStatus>: unknown branch -> InnerTrackPixelHits
+Error in <TTree::SetBranchStatus>: unknown branch -> innerTrack
+Error in <TTree::SetBranchStatus>: unknown branch -> chiTracker
+Error in <TTree::SetBranchStatus>: unknown branch -> DxyTracker
+Error in <TTree::SetBranchStatus>: unknown branch -> DzTracker
+Error in <TTree::SetBranchStatus>: unknown branch -> innerTrackpt
+Error in <TTree::SetBranchStatus>: unknown branch -> innerTracketa
+Error in <TTree::SetBranchStatus>: unknown branch -> innerTrackphi
+Error in <TTree::SetBranchStatus>: unknown branch -> tight_validFraction
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrack
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackChi
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackPt
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackEta
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackPhi
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackHits
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackRHits
+Error in <TTree::SetBranchStatus>: unknown branch -> GlobalTrack
+Error in <TTree::SetBranchStatus>: unknown branch -> GlobalTrckPt
+Error in <TTree::SetBranchStatus>: unknown branch -> GlobalTrckEta
+Error in <TTree::SetBranchStatus>: unknown branch -> GlobalTrckPhi
+Error in <TTree::SetBranchStatus>: unknown branch -> Global_Muon_Hits
+Error in <TTree::SetBranchStatus>: unknown branch -> MatchedStations
+Error in <TTree::SetBranchStatus>: unknown branch -> GlobTrack_Chi
+Error in <TTree::SetBranchStatus>: unknown branch -> Tight_LongitudinalImpactparameter
+Error in <TTree::SetBranchStatus>: unknown branch -> Tight_TransImpactparameter
+Error in <TTree::SetBranchStatus>: unknown branch -> IsolationR03
+Error in <TTree::SetBranchStatus>: unknown branch -> MuonIsMedium
+Error in <TTree::SetBranchStatus>: unknown branch -> muon_trkKink
+Error in <TTree::SetBranchStatus>: unknown branch -> muon_chi2LocalPosition
+Error in <TTree::SetBranchStatus>: unknown branch -> muon_segComp
+Error in <TTree::SetBranchStatus>: unknown branch -> TrackerLayer
+Error in <TTree::SetBranchStatus>: unknown branch -> NumPixelLayers
+Error in <TTree::SetBranchStatus>: unknown branch -> InnerTrackPixelHits
+Error in <TTree::SetBranchStatus>: unknown branch -> innerTrack
+Error in <TTree::SetBranchStatus>: unknown branch -> chiTracker
+Error in <TTree::SetBranchStatus>: unknown branch -> DxyTracker
+Error in <TTree::SetBranchStatus>: unknown branch -> DzTracker
+Error in <TTree::SetBranchStatus>: unknown branch -> innerTrackpt
+Error in <TTree::SetBranchStatus>: unknown branch -> innerTracketa
+Error in <TTree::SetBranchStatus>: unknown branch -> innerTrackphi
+Error in <TTree::SetBranchStatus>: unknown branch -> tight_validFraction
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrack
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackChi
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackPt
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackEta
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackPhi
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackHits
+Error in <TTree::SetBranchStatus>: unknown branch -> OuterTrackRHits
+Error in <TTree::SetBranchStatus>: unknown branch -> GlobalTrack
+Error in <TTree::SetBranchStatus>: unknown branch -> GlobalTrckPt
+Error in <TTree::SetBranchStatus>: unknown branch -> GlobalTrckEta
+Error in <TTree::SetBranchStatus>: unknown branch -> GlobalTrckPhi
+Error in <TTree::SetBranchStatus>: unknown branch -> Global_Muon_Hits
+Error in <TTree::SetBranchStatus>: unknown branch -> MatchedStations
+Error in <TTree::SetBranchStatus>: unknown branch -> GlobTrack_Chi
+Error in <TTree::SetBranchStatus>: unknown branch -> Tight_LongitudinalImpactparameter
+Error in <TTree::SetBranchStatus>: unknown branch -> Tight_TransImpactparameter
+Error in <TTree::SetBranchStatus>: unknown branch -> IsolationR03
+SysError in <TFile::TFile>: file /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_257.root can not be opened for reading (Software caused connection abort)
+Error in <TFile::TFile>: file /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_258.root does not exist
+Error in <TFile::TFile>: file /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_259.root does not exist
+Error in <TFile::TFile>: file /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_26.root does not exist
+Error in <TFile::TFile>: file /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/QCD-Pt15-7000_TuneCP5_13TeV_pythia8_IsoTrackFilter/QCD_2018D_wPU_ieta27_Oct20/181021_191320/0000/Validation_260.root does not exist
+SysError in <TFile::WriteBuffer>: error writing to file /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/ntuples/20Oct2018/HCALSampleQCD_2018D_wPU_ieta27_Oct20/20Oct2018QCD_2018D_wPU_ieta27_Oct20_job17_nvtx_sel-1.root (-1) (Transport endpoint is not connected)
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranchElement::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranchElement::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranchElement::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranchElement::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+
+Error in <TBranch::TBranch::WriteBasketImpl>: basket's WriteBuffer failed.
+

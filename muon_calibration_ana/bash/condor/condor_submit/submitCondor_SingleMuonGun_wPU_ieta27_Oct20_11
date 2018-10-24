@@ -1,0 +1,12 @@
+executable=/afs/cern.ch/work/i/idutta/private/HCAL_muALCA/CMSSW_10_1_6/src/Muon_Calibration_noTrack_2018/muon_calibration_ana/bash/condor/run_myprog.sh
+universe=vanilla
+Arguments=/afs/cern.ch/work/i/idutta/private/HCAL_muALCA/CMSSW_10_1_6/src/Muon_Calibration_noTrack_2018/muon_calibration_ana/bash/condor/condor_submit/runList_SingleMuonGun_wPU_ieta27_Oct20_11.txt 20Oct2018SingleMuonGun_wPU_ieta27_Oct20_job11 /eos/cms/store/group/dpg_hcal/comm_hcal/idutta/ntuples/20Oct2018/HCALSampleSingleMuonGun_wPU_ieta27_Oct20
+Input =
+Output = condor_output/condor_logs/condor_20Oct2018SingleMuonGun_wPU_ieta27_Oct20_job11.out
+Error  = condor_output/condor_logs/condor_20Oct2018SingleMuonGun_wPU_ieta27_Oct20_job11.err
+Log    = condor_output/condor_logs/condor_20Oct2018SingleMuonGun_wPU_ieta27_Oct20_job11.log
+Requirements=TARGET.OpSysAndVer=="CentOS7"
+notification=never
+should_transfer_files=YES
+when_to_transfer_output = ON_EXIT
+queue

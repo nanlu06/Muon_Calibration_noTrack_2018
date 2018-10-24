@@ -1,0 +1,13 @@
+executable=/afs/cern.ch/work/i/idutta/private/HCAL_muALCA/CMSSW_10_1_6/src/Muon_Calibration_noTrack_2018/muon_calibration_ana/bash/condor/run_myprog.sh
+universe=vanilla
+Arguments=FILELIST JOBNAME OUTDIR
+Input =
+Output = condor_output/condor_logs/condor_JOBNAME.out
+Error  = condor_output/condor_logs/condor_JOBNAME.err
+Log    = condor_output/condor_logs/condor_JOBNAME.log
+Requirements=TARGET.OpSysAndVer=="CentOS7"
+notification=never
+should_transfer_files=YES
+when_to_transfer_output = ON_EXIT
+use_x509userproxy = true
+queue
