@@ -27,6 +27,7 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 
    int Ecal_label_o, index1, index2, run, event, n_nvtx_good, HCal_cellHot_o, HCal_cellHot, tight1, tight2, Trkmatch, HCal_ieta, HCal_iphi, HCal_ieta_o, HCal_iphi_o;
 
+   bool IsMuonRec;
    e1s = 0, e2s = 0, e3s = 0, e4s = 0, e5s = 0, e6s = 0, e7s = 0;
    tree->Branch("run", &run, "run/I");
    tree->Branch("nvtx_good", &n_nvtx_good, "nvtx_good/I");
@@ -58,6 +59,7 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
    tree->Branch("pt_genMuon", &pt_genMuon);
    tree->Branch("energy_genMuon", &energy_genMuon);
    tree->Branch("phi_genMuon", &phi_genMuon);
+   tree->Branch("IsMuonRec", &IsMuonRec);
    tree->Branch("e1", &e1, "e1/D");
    tree->Branch("e2", &e2, "e2/D");
    tree->Branch("e3", &e3, "e3/D");
@@ -152,8 +154,10 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	   //if((pt_of_genMuon-pt_of_muon
 	   //}
            run = Run_No;
+	   
            event = Event_No;
-           n_nvtx_good = GoodVertex;
+           //cout<<event<<endl;
+	   n_nvtx_good = GoodVertex;
            weight = 1.0;
            HCal_cellHot = hcal_cellHot->at(k);
            HCal_cellHot_o = hcal_cellHot_o->at(k);
@@ -165,7 +169,7 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
            chg = charge_of_muon->at(k);
            energy = energy_of_muon->at(k);
            p = p_of_muon->at(k);
-	   
+	   IsMuonRec = isMuonRec->at(k);
            ecal1x1 = ecal_1x1->at(k);
            ecal3x3 = ecal_3x3->at(k);
            ecal5x5 = ecal_5x5->at(k);

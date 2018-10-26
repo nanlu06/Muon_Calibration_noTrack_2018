@@ -98,6 +98,7 @@ public :
    vector<unsigned int> *ehcal_detID;
    vector<int>     *hcal_ieta;
    vector<int>     *hcal_iphi;
+   vector<bool>    *isMuonRec;
    vector<double>  *hcal_edepthuncalibrated1;
    vector<double>  *hcal_ndepth1;
    vector<double>  *hcal_edepth11;
@@ -390,6 +391,7 @@ public :
    TBranch        *b_ehcal_detID;   //!
    TBranch        *b_hcal_ieta;   //!
    TBranch        *b_hcal_iphi;   //!
+   TBranch        *b_isMuonRec;
    TBranch        *b_hcal_edepthuncalibrated1;   //!
    TBranch        *b_hcal_ndepth1;   //!
    TBranch        *b_hcal_edepth11;   //!
@@ -738,6 +740,7 @@ void NtuplerReader::Init(TTree *tree)
    ehcal_detID = 0;
    hcal_ieta = 0;
    hcal_iphi = 0;
+   isMuonRec = 0;
    hcal_edepthuncalibrated1 = 0;
    hcal_ndepth1 = 0;
    hcal_edepth11 = 0;
@@ -1034,6 +1037,7 @@ void NtuplerReader::Init(TTree *tree)
    fChain->SetBranchAddress("ehcal_detID", &ehcal_detID, &b_ehcal_detID);
    fChain->SetBranchAddress("hcal_ieta", &hcal_ieta, &b_hcal_ieta);
    fChain->SetBranchAddress("hcal_iphi", &hcal_iphi, &b_hcal_iphi);
+   fChain->SetBranchAddress("isMuonRec", &isMuonRec, &b_isMuonRec);
    fChain->SetBranchAddress("hcal_edepthuncalibrated1", &hcal_edepthuncalibrated1, &b_hcal_edepthuncalibrated1);
    fChain->SetBranchAddress("hcal_ndepth1", &hcal_ndepth1, &b_hcal_ndepth1);
    fChain->SetBranchAddress("hcal_edepth11", &hcal_edepth11, &b_hcal_edepth11);
