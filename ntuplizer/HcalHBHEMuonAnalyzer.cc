@@ -118,7 +118,7 @@ private:
   edm::EDGetTokenT<HBHERecHitCollection>                  tok_HBHE_;
   edm::EDGetTokenT<reco::MuonCollection>                  tok_Muon_;
   edm::EDGetTokenT<LumiScalersCollection>                 lumiScalersSrc_; 
-  edm::EDGetTokenT<reco::GenParticleCollection>           tok_GenPart_;
+  //edm::EDGetTokenT<reco::GenParticleCollection>           tok_GenPart_;
   //////////////////////////////////////////////////////
   static const int          depthMax_ = 7;
   TTree                    *tree_;
@@ -126,7 +126,7 @@ private:
   unsigned int              goodVertex_;
   float                     LumiScaler_, BunchLumi_, pileup_, pileupRMS_;
   std::vector<bool>         muon_is_good_, muon_global_, muon_tracker_;
-  std::vector<bool>         muon_is_tight_, muon_is_medium_;
+  std::vector<bool>         muon_is_tight_, muon_is_medium_, isMuonRec_;
   std::vector<double>       cGlob_, ptGlob_, etaGlob_, phiGlob_, energyMuon_, pMuon_;
   std::vector<double>       isolationR04_;
   std::vector<double>       ecalEnergy_, hcalEnergy_, hoEnergy_;
@@ -172,7 +172,7 @@ HcalHBHEMuonAnalyzer::HcalHBHEMuonAnalyzer(const edm::ParameterSet& iConfig) :
   labelLumiScalers_(iConfig.getParameter<edm::InputTag>("labelLumiScalers")),
   labelVtx_(iConfig.getParameter<std::string>("labelVertex")),
   labelMuon_(iConfig.getParameter<std::string>("labelMuon")),
-  labelGenPart_(iConfig.getParameter<std::string>("labelGenPart")),
+  //labelGenPart_(iConfig.getParameter<std::string>("labelGenPart")),
   fileInCorr_(iConfig.getUntrackedParameter<std::string>("fileInCorr","")),
   triggers_(iConfig.getParameter<std::vector<std::string>>("triggers")),
   verbosity_(iConfig.getUntrackedParameter<int>("verbosity",0)),
@@ -204,23 +204,23 @@ HcalHBHEMuonAnalyzer::HcalHBHEMuonAnalyzer(const edm::ParameterSet& iConfig) :
   if (modnam.empty()) {
     tok_Vtx_      = consumes<reco::VertexCollection>(labelVtx_);
     tok_Muon_     = consumes<reco::MuonCollection>(labelMuon_);
-    tok_GenPart_     = consumes<reco::GenParticleCollection>(labelGenPart_);
+    //tok_GenPart_     = consumes<reco::GenParticleCollection>(labelGenPart_);
     edm::LogVerbatim("HBHEMuon")  << "Labels used: Trig " << hlTriggerResults_
 				  << " Vtx " << labelVtx_ << " EB " 
 				  << labelEBRecHit_ << " EE "
 				  << labelEERecHit_ << " HBHE " 
-				  << labelHBHERecHit_ << " MU " << labelMuon_<< "GenPart " << labelGenPart_;
+				  << labelHBHERecHit_ << " MU " << labelMuon_; //<< "GenPart " << labelGenPart_;
   } else {
     tok_Vtx_      = consumes<reco::VertexCollection>(edm::InputTag(modnam,labelVtx_,procnm));
     tok_Muon_     = consumes<reco::MuonCollection>(edm::InputTag(modnam,labelMuon_,procnm));
-    tok_GenPart_     = consumes<reco::GenParticleCollection>(edm::InputTag(modnam,labelGenPart_,procnm));
+    //tok_GenPart_     = consumes<reco::GenParticleCollection>(edm::InputTag(modnam,labelGenPart_,procnm));
     edm::LogVerbatim("HBHEMuon")   << "Labels used Trig " << hlTriggerResults_
 				   << "\n  Vtx  " << edm::InputTag(modnam,labelVtx_,procnm)
 				   << "\n  EB   " << labelEBRecHit_
 				   << "\n  EE   " << labelEERecHit_
 				   << "\n  HBHE " << labelHBHERecHit_
-				   << "\n  MU   " << edm::InputTag(modnam,labelMuon_,procnm)
-				   << "\n GenPart "<<edm::InputTag(modnam,labelGenPart_,procnm);
+				   << "\n  MU   " << edm::InputTag(modnam,labelMuon_,procnm);
+				   //<< "\n GenPart "<<edm::InputTag(modnam,labelGenPart_,procnm);
   }
 
   if (!fileInCorr_.empty()) {
@@ -352,8 +352,8 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
   edm::Handle<reco::MuonCollection> _Muon;
   iEvent.getByToken(tok_Muon_, _Muon);
 
-  edm::Handle<reco::GenParticleCollection> _GenPart;
-  iEvent.getByToken(tok_GenPart_, _GenPart);
+  //edm::Handle<reco::GenParticleCollection> _GenPart;
+  //iEvent.getByToken(tok_GenPart_, _GenPart);
   // require a good vertex
   math::XYZPoint pvx;
   goodVertex_ = 0;
@@ -422,7 +422,7 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
 	h_cutflow->Fill(0); //initial muon selections
         TLorentzVector lvMuon;
         lvMuon.SetPtEtaPhiM(RecMuon->pt(), RecMuon->eta(), RecMuon->phi(), 0.10566);
-
+        bool isMuonRec=false;
         bool Zmm=false;
         for (reco::MuonCollection::const_iterator iMuon = _Muon->begin(); iMuon!= _Muon->end(); ++iMuon)  {
          if(iMuon!=RecMuon && (iMuon->charge()!=RecMuon->charge())){
@@ -430,15 +430,23 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
            bool muon2 = muon::isMediumMuon(*iMuon);
            bool muon3 = (iMuon->pfIsolationR04().sumChargedHadronPt + std::max(0.,iMuon->pfIsolationR04().sumNeutralHadronEt + iMuon->pfIsolationR04().sumPhotonEt - (0.5 *iMuon->pfIsolationR04().sumPUPt))) / iMuon->pt()<0.15;
            if(muon1 && muon2 && muon3){
-            TLorentzVector Muon_tmp;
-            Muon_tmp.SetPtEtaPhiM(iMuon->pt(), iMuon->eta(), iMuon->phi(), 0.10566);
-            double dimuon_M = (Muon_tmp + lvMuon).M();
-             if(fabs(dimuon_M-91.188)< 2. ){
+            const reco::Track* ipTrack = (iMuon->innerTrack()).get();
+            spr::propagatedTrackID itrackID = spr::propagateCALO(ipTrack, geo, bField, (((verbosity_/100)%10>0)));
+            DetId iclosestCell(itrackID.detIdHCAL);
+            HcalDetId ihcidt(iclosestCell.rawId());
+            if((hcidt.ieta()==26 && ieta>0) || (hcidt.ieta()==-26 && ieta<0)){ isMuonRec=true;}
+
+            if(fabs(hcidt.ieta())<26){
+              TLorentzVector Muon_tmp;
+              Muon_tmp.SetPtEtaPhiM(iMuon->pt(), iMuon->eta(), iMuon->phi(), 0.10566);
+              double dimuon_M = (Muon_tmp + lvMuon).M();
+                if(fabs(dimuon_M-91.188)< 2. ){
                   Zmm=true;
                   break;
-             }
-           }
-         }
+                }
+              }
+            } 
+          }
         }
         if(Zmm) continue;
 	h_cutflow->Fill(1); // Zmm cut
@@ -456,7 +464,7 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
         ecalEnergy_.push_back(RecMuon->calEnergy().emS9);		 
         hcalEnergy_.push_back(RecMuon->calEnergy().hadS9);
         hoEnergy_.push_back(RecMuon->calEnergy().hoS9);
-
+        /*
 	for (reco::GenParticleCollection::const_iterator iGenPart = _GenPart->begin(); iGenPart!= _GenPart->end(); ++iGenPart)  {
 	  if(fabs(iGenPart->pdgId())==13){
 	    genMuon_pt_.push_back(iGenPart->pt());
@@ -465,6 +473,7 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
 	    genMuon_energy_.push_back(iGenPart->energy());
 	  }
 	}
+        */
         double eEcal1x1(0), eEcal3x3(0),eEcal5x5(0), eEcal15x15(0), eEcal25x25(0), eHcal(0), activeLengthTot(0); //activeLengthHotTot(0);
         double eHcalDepth[depthMax_], eHcalDepthHot[depthMax_];
         double eHcalDepth1[depthMax_], eHcalDepth2[depthMax_], eHcalDepth3[depthMax_], eHcalDepth4[depthMax_], eHcalDepth5[depthMax_], eHcalDepth6[depthMax_], eHcalDepth7[depthMax_], eHcalDepth8[depthMax_];
@@ -510,10 +519,10 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
 #endif
 
         //check the opposite side of the detector
-        o_ieta = 27;
+        o_ieta = 26;
         o_iphi = iphi - 36;
         if(iphi<=36) o_iphi = iphi + 36;
-        if(ieta<0) o_ieta = -27;
+        if(ieta<0) o_ieta = -26;
           
         HcalSubdetector o_subdet = HcalEndcap;
         HcalDetId o_hcid0(o_subdet,o_ieta,o_iphi,1);
@@ -721,6 +730,7 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
 	spr::eHCALmatrix(geo, theHBHETopology_, closestCell, hbhe, 1,1, hotCell, false, useRaw_, false);
 	isHot = matchId(closestCell,hotCell);
 
+        isMuonRec_.push_back(isMuonRec);
         ecalDetId_.push_back((trackID.detIdECAL)());
         hcalDetId_.push_back((trackID.detIdHCAL)());
         ehcalDetId_.push_back((trackID.detIdEHCAL)());
@@ -919,6 +929,7 @@ void HcalHBHEMuonAnalyzer::beginJob() {
   tree_->Branch("ehcal_detID",                      &ehcalDetId_);
   tree_->Branch("hcal_ieta",                        &hcal_ieta_);
   tree_->Branch("hcal_iphi",                        &hcal_iphi_);
+  tree_->Branch("isMuonRec",                        &isMuonRec_);
 
   char name[100], namen[100];
   for (int k=0; k<maxDepth_; ++k) {
@@ -1185,7 +1196,7 @@ void HcalHBHEMuonAnalyzer::fillDescriptions(edm::ConfigurationDescriptions& desc
   desc.add<edm::InputTag>("labelLumiScalers", edm::InputTag("scalersRawToDigi"));
   desc.add<std::string>("labelVertex","offlinePrimaryVertices");
   desc.add<std::string>("labelMuon","muons");
-  desc.add<std::string>("labelGenPart","genParticles");
+  //desc.add<std::string>("labelGenPart","genParticles");
   std::vector<std::string> trig = {"HLT_IsoMu17","HLT_IsoMu20",
 				   "HLT_IsoMu24","HLT_IsoMu27",
 				   "HLT_Mu45","HLT_Mu50"};
@@ -1255,6 +1266,7 @@ void HcalHBHEMuonAnalyzer::clearVectors() {
   o_hcal_iphi_.clear();
   eEcal_.clear();
   Ecal_label_.clear();
+  isMuonRec_.clear();
  
   o_hcalDepth1Energy_.clear();
   o_hcalDepth1Energy1_.clear();
