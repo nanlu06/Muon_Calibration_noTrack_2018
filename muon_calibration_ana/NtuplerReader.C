@@ -17,18 +17,17 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 
    TTree *tree = new TTree("tree","tree");
 
-   double chg, ecal1x1, ecal3x3,ecal5x5, ecal15x15,ecal25x25, weight, ISOR04, p, energy, pt, eta, eEcal_o, phi, pt2, eta2, phi2, e1dx, e2dx, e3dx, e4dx, e5dx, e6dx, e7dx, e1, e2, e3, e4, e5, e6, e7, e1_o, e2_o, e3_o, e4_o, e5_o, e6_o, e7_o;
+   double chg= -999., ecal1x1= -999., ecal3x3= -999.,ecal5x5= -999., ecal15x15= -999.,ecal25x25= -999., weight= -999., ISOR04= -999., p= -999., energy= -999., pt= -999., eta= -999., eEcal_o= -999., phi= -999., pt2= -999., eta2= -999., phi2= -999., e1dx= -999., e2dx= -999., e3dx= -999., e4dx= -999., e5dx= -999., e6dx= -999., e7dx= -999., e1= -999., e2= -999., e3= -999., e4= -999., e5= -999., e6= -999., e7= -999., e1_o = -999., e2_o = -999., e3_o = -999. , e4_o = -999., e5_o = -999., e6_o= -999. , e7_o = -999. ;
 
    vector<double> pt_genMuon,eta_genMuon,phi_genMuon,energy_genMuon;
 
-   double e1r, e12r, e123r, e23r, e1s, e15, e2r, e2s, e25, e3r, e3s, e35, e4r, e4s, e45, e5r, e5s, e55, e6r, e6s, e65, e7r, e7s, e75;
+   double e1r = -999., e12r= -999., e123r= -999., e23r= -999., e1s= -999., e15= -999., e2r= -999., e2s= -999., e25= -999., e3r= -999., e3s= -999., e35= -999., e4r= -999., e4s= -999., e45= -999., e5r= -999., e5s= -999., e55= -999., e6r= -999., e6s= -999., e65= -999., e7r= -999., e7s= -999., e75= -999.;
 
-   double e1r_o, e12r_o, e123r_o, e23r_o, e1s_o, e15_o, e2r_o, e2s_o, e25_o, e3r_o, e3s_o, e35_o, e4r_o, e4s_o, e45_o, e5r_o, e5s_o, e55_o, e6r_o, e6s_o, e65_o, e7r_o, e7s_o, e75_o;
+   double e1r_o = -999., e12r_o= -999., e123r_o= -999., e23r_o= -999., e1s_o= -999., e15_o= -999., e2r_o= -999., e2s_o= -999., e25_o= -999., e3r_o= -999., e3s_o= -999., e35_o= -999., e4r_o= -999., e4s_o= -999., e45_o= -999., e5r_o= -999., e5s_o= -999., e55_o= -999., e6r_o= -999., e6s_o= -999., e65_o= -999., e7r_o= -999., e7s_o= -999., e75_o= -999.;
 
-   int Ecal_label_o, index1, index2, run, event, n_nvtx_good, HCal_cellHot_o, HCal_cellHot, tight1, tight2, Trkmatch, HCal_ieta, HCal_iphi, HCal_ieta_o, HCal_iphi_o;
+   int Ecal_label_o = -999 , index1= -999, index2 = -999, run = -999, event = -999, n_nvtx_good = -999, HCal_cellHot_o = -999, HCal_cellHot = -999, tight1 = -999, tight2 = -999, Trkmatch = -999, HCal_ieta = -999, HCal_iphi = -999, HCal_ieta_o = -999, HCal_iphi_o = -999;
 
-   bool IsMuonRec;
-   e1s = 0, e2s = 0, e3s = 0, e4s = 0, e5s = 0, e6s = 0, e7s = 0;
+   bool IsMuonRec = false;
    tree->Branch("run", &run, "run/I");
    tree->Branch("nvtx_good", &n_nvtx_good, "nvtx_good/I");
    tree->Branch("event", &event, "event/I");
@@ -120,6 +119,8 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
       if (ientry < 0) break;
       nb = fChain->GetEntry(jentry);   nbytes += nb;
       // if (Cut(ientry) < 0) continue;
+      //if(Event_No!=25221) continue;
+      //else std::cout <<"find event==25221 "<<std::endl;
       pt_genMuon.clear();
       phi_genMuon.clear();
       eta_genMuon.clear();
@@ -235,10 +236,8 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
            e5r_o = e5s_o/e5_o;
            e6r_o = e6s_o/e6_o;
            e7r_o = e7s_o/e7_o;
-
+           tree->Fill();
       }
-      tree->Fill();
-      
    }
    outputFile->cd();
    tree->Write();
