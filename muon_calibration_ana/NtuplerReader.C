@@ -20,7 +20,9 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
    double chg= -999., ecal1x1= -999., ecal3x3= -999.,ecal5x5= -999., ecal15x15= -999.,ecal25x25= -999., weight= -999., ISOR04= -999., p= -999., energy= -999., pt= -999., eta= -999., eEcal_o= -999., phi= -999., pt2= -999., eta2= -999., phi2= -999., e1dx= -999., e2dx= -999., e3dx= -999., e4dx= -999., e5dx= -999., e6dx= -999., e7dx= -999., e1= -999., e2= -999., e3= -999., e4= -999., e5= -999., e6= -999., e7= -999., e1_o = -999., e2_o = -999., e3_o = -999. , e4_o = -999., e5_o = -999., e6_o= -999. , e7_o = -999. ;
 
    vector<double> pt_genMuon,eta_genMuon,phi_genMuon,energy_genMuon;
-
+   vector<double> pt_probe,eta_probe,phi_probe,energy_probe,charge_probe,p_probe,ISOR04_probe;
+   vector<bool>MuonIsMed_probe;
+   int nMuon_probe=-999;
    double e1r = -999., e12r= -999., e123r= -999., e23r= -999., e1s= -999., e15= -999., e2r= -999., e2s= -999., e25= -999., e3r= -999., e3s= -999., e35= -999., e4r= -999., e4s= -999., e45= -999., e5r= -999., e5s= -999., e55= -999., e6r= -999., e6s= -999., e65= -999., e7r= -999., e7s= -999., e75= -999.;
 
    double e1r_o = -999., e12r_o= -999., e123r_o= -999., e23r_o= -999., e1s_o= -999., e15_o= -999., e2r_o= -999., e2s_o= -999., e25_o= -999., e3r_o= -999., e3s_o= -999., e35_o= -999., e4r_o= -999., e4s_o= -999., e45_o= -999., e5r_o= -999., e5s_o= -999., e55_o= -999., e6r_o= -999., e6s_o= -999., e65_o= -999., e7r_o= -999., e7s_o= -999., e75_o= -999.;
@@ -28,6 +30,7 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
    int Ecal_label_o = -999 , index1= -999, index2 = -999, run = -999, event = -999, n_nvtx_good = -999, HCal_cellHot_o = -999, HCal_cellHot = -999, tight1 = -999, tight2 = -999, Trkmatch = -999, HCal_ieta = -999, HCal_iphi = -999, HCal_ieta_o = -999, HCal_iphi_o = -999;
 
    bool IsMuonRec = false;
+   
    tree->Branch("run", &run, "run/I");
    tree->Branch("nvtx_good", &n_nvtx_good, "nvtx_good/I");
    tree->Branch("event", &event, "event/I");
@@ -59,6 +62,15 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
    tree->Branch("energy_genMuon", &energy_genMuon);
    tree->Branch("phi_genMuon", &phi_genMuon);
    tree->Branch("IsMuonRec", &IsMuonRec);
+   tree->Branch("eta_probe", &eta_probe);
+   tree->Branch("pt_probe", &pt_probe);
+   tree->Branch("energy_probe", &energy_probe);
+   tree->Branch("phi_probe", &phi_probe);
+   tree->Branch("charge_probe", &charge_probe);
+   tree->Branch("p_probe", &p_probe);
+   tree->Branch("ISOR04_probe", &ISOR04_probe);
+   tree->Branch("MuonIsMed_probe", &MuonIsMed_probe);
+   tree->Branch("nMuon_probe",&nMuon_probe);
    tree->Branch("e1", &e1, "e1/D");
    tree->Branch("e2", &e2, "e2/D");
    tree->Branch("e3", &e3, "e3/D");
@@ -121,6 +133,14 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
       // if (Cut(ientry) < 0) continue;
       //if(Event_No!=25221) continue;
       //else std::cout <<"find event==25221 "<<std::endl;
+      pt_probe.clear();
+      eta_probe.clear();
+      phi_probe.clear();
+      energy_probe.clear();
+      charge_probe.clear();
+      p_probe.clear();
+      ISOR04_probe.clear();
+      MuonIsMed_probe.clear();
       pt_genMuon.clear();
       phi_genMuon.clear();
       eta_genMuon.clear();
@@ -134,16 +154,18 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	eta_genMuon.push_back(eta_of_genMuon->at(k));
 	energy_genMuon.push_back(energy_of_genMuon->at(k));
       }
-      for(int k = 0; k<nmuon; k ++){
+      //cout<<jentry<<" : "<<nmuon<<endl;
       
-           if(nvtx_sel==-1){
-              if((!(hcal_cellHot->at(k))) || (!(matchedId->at(k))) || (MuonIsTight->at(k)==0) || (IsolationR04->at(k)>=0.15) || /*(!(hcal_cellHot_o->at(k))) ||*/ (pt_of_muon->at(k))<20 ) continue;
-           }
-           else{
-	     if((!(hcal_cellHot->at(k))) || (!(matchedId->at(k))) || (GoodVertex!= nvtx_sel) || (MuonIsTight->at(k)==0) || (IsolationR04->at(k)>=0.15) || /*(!(hcal_cellHot_o->at(k))) ||*/ (pt_of_muon->at(k))<20 ) continue;
-           }
-           bool match1 = hcal_depthMatch1->at(k);
-           bool match2 = hcal_depthMatch2->at(k);
+      
+      for(int k = 0; k<nmuon; k ++){
+	if(nvtx_sel==-1){
+	  if((!(hcal_cellHot->at(k))) || (!(matchedId->at(k))) || (MuonIsTight->at(k)==0) || (IsolationR04->at(k)>=0.15) || /*(!(hcal_cellHot_o->at(k))) ||*/ (pt_of_muon->at(k))<20 ) continue;
+	}
+	else{
+	  if((!(hcal_cellHot->at(k))) || (!(matchedId->at(k))) || (GoodVertex!= nvtx_sel) || (MuonIsTight->at(k)==0) || (IsolationR04->at(k)>=0.15) || /*(!(hcal_cellHot_o->at(k))) ||*/ (pt_of_muon->at(k))<20 ) continue;
+	}
+	bool match1 = hcal_depthMatch1->at(k);
+	bool match2 = hcal_depthMatch2->at(k);
            bool match3 = hcal_depthMatch3->at(k);
            bool match4 = hcal_depthMatch4->at(k);
            bool match5 = hcal_depthMatch5->at(k);
@@ -158,7 +180,7 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	   
            event = Event_No;
            //cout<<event<<endl;
-	   n_nvtx_good = GoodVertex;
+ 	   n_nvtx_good = GoodVertex;
            weight = 1.0;
            HCal_cellHot = hcal_cellHot->at(k);
            HCal_cellHot_o = hcal_cellHot_o->at(k);
@@ -171,7 +193,23 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
            energy = energy_of_muon->at(k);
            p = p_of_muon->at(k);
 	   IsMuonRec = isMuonRec->at(k);
-           ecal1x1 = ecal_1x1->at(k);
+	   nMuon_probe=n_muon_probe->at(k);
+	   double sum_probe=0.;
+	   for(int s =0; s<k;s++) sum_probe+=n_muon_probe->at(s);
+	   for(int pr=sum_probe;pr<sum_probe+n_muon_probe->at(k);pr++){
+	     if(pt_of_muon_probe->at(pr)!=pt && isolationR04_probe->at(pr)<0.25){
+	       //cout<<Event_No<<" "<<pt_of_muon_probe->at(pr)<<" "<<pt<<endl;
+	       pt_probe.push_back(pt_of_muon_probe->at(pr));
+	       phi_probe.push_back(phi_of_muon_probe->at(pr));
+	       eta_probe.push_back(eta_of_muon_probe->at(pr));
+	       energy_probe.push_back(energy_of_muon_probe->at(pr));
+	       charge_probe.push_back(charge_of_muon_probe->at(pr));
+	       p_probe.push_back(p_of_muon_probe->at(pr));
+	       ISOR04_probe.push_back(isolationR04_probe->at(pr));
+	       MuonIsMed_probe.push_back(MuonIsMedium_probe->at(pr));
+	     }
+	   }
+	   ecal1x1 = ecal_1x1->at(k);
            ecal3x3 = ecal_3x3->at(k);
            ecal5x5 = ecal_5x5->at(k);
            ecal15x15 = ecal_15x15->at(k);
@@ -236,7 +274,9 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
            e5r_o = e5s_o/e5_o;
            e6r_o = e6s_o/e6_o;
            e7r_o = e7s_o/e7_o;
+	   //cout<<jentry<<": Filling event "<<event<<endl;
            tree->Fill();
+	   //cout<<"Finished\n";
       }
    }
    outputFile->cd();
