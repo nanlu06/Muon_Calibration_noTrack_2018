@@ -126,15 +126,15 @@ private:
   unsigned int              goodVertex_;
   float                     LumiScaler_, BunchLumi_, pileup_, pileupRMS_;
   std::vector<bool>         muon_is_good_, muon_global_, muon_tracker_;
-  std::vector<bool>         muon_is_tight_, muon_is_medium_, isMuonRec_;
-  std::vector<double>       cGlob_, ptGlob_, etaGlob_, phiGlob_, energyMuon_, pMuon_;
+  std::vector<bool>         muon_is_tight_, muon_is_medium_probe_,isMuonRec_;
+  std::vector<double>       cGlob_, ptGlob_, etaGlob_, phiGlob_, energyMuon_, pMuon_, cGlob_probe_, ptGlob_probe_, etaGlob_probe_, phiGlob_probe_, energyMuon_probe_, pMuon_probe_, isolationR04_probe_;
   std::vector<double>       isolationR04_;
   std::vector<double>       ecalEnergy_, hcalEnergy_, hoEnergy_;
   std::vector<bool>         matchedId_, hcalHot_, o_hcalHot_;
   std::vector<double>       genMuon_pt_,genMuon_eta_,genMuon_phi_,genMuon_energy_;
   std::vector<double>       eEcal_, Ecal_label_, ecal1x1Energy_, ecal3x3Energy_, ecal5x5Energy_, ecal15x15Energy_, ecal25x25Energy_, hcal1x1Energy_;
   std::vector<unsigned int> ecalDetId_, hcalDetId_, ehcalDetId_;
-  std::vector<int>          hcal_ieta_, hcal_iphi_, o_hcal_ieta_, o_hcal_iphi_;
+  std::vector<int>          hcal_ieta_, hcal_iphi_, o_hcal_ieta_, o_hcal_iphi_, n_muon_probe_;
   std::vector<double>       hcalDepthEnergy_[depthMax_], hcalDepthEnergy1_[depthMax_], hcalDepthEnergy2_[depthMax_], hcalDepthEnergy3_[depthMax_], hcalDepthEnergy4_[depthMax_], hcalDepthEnergy5_[depthMax_], hcalDepthEnergy6_[depthMax_], hcalDepthEnergy7_[depthMax_], hcalDepthEnergy8_[depthMax_];
   std::vector<double>       hcalDepthNumHits_[depthMax_], hcalDepthNumHits1_[depthMax_], hcalDepthNumHits2_[depthMax_], hcalDepthNumHits3_[depthMax_], hcalDepthNumHits4_[depthMax_], hcalDepthNumHits5_[depthMax_], hcalDepthNumHits6_[depthMax_], hcalDepthNumHits7_[depthMax_], hcalDepthNumHits8_[depthMax_];
   std::vector<double>       hcalDepthActiveLength_[depthMax_];
@@ -422,8 +422,11 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
 	h_cutflow->Fill(0); //initial muon selections
         TLorentzVector lvMuon;
         lvMuon.SetPtEtaPhiM(RecMuon->pt(), RecMuon->eta(), RecMuon->phi(), 0.10566);
-        bool isMuonRec=false;
         bool Zmm=false;
+
+        //double cGlob_probe = -999., ptGlob_probe = -999., etaGlob_probe = -999., phiGlob_probe = -999., energyMuon_probe = -999., pMuon_probe = -999.;
+        //bool muon_is_medium_probe=false;
+
         for (reco::MuonCollection::const_iterator iMuon = _Muon->begin(); iMuon!= _Muon->end(); ++iMuon)  {
          if(iMuon!=RecMuon && (iMuon->charge()!=RecMuon->charge())){
            bool muon1 = iMuon->pt()>20.0 && fabs(iMuon->eta())<2.5;
@@ -434,9 +437,9 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
             spr::propagatedTrackID itrackID = spr::propagateCALO(ipTrack, geo, bField, (((verbosity_/100)%10>0)));
             DetId iclosestCell(itrackID.detIdHCAL);
             HcalDetId ihcidt(iclosestCell.rawId());
-            if((hcidt.ieta()==26 && ieta>0) || (hcidt.ieta()==-26 && ieta<0)){ isMuonRec=true;}
+            //if((hcidt.ieta()==25 && ieta>0) || (hcidt.ieta()==-25 && ieta<0)){ isMuonRec=true;}
 
-            if(fabs(hcidt.ieta())<26){
+            if(fabs(hcidt.ieta())!=25){
               TLorentzVector Muon_tmp;
               Muon_tmp.SetPtEtaPhiM(iMuon->pt(), iMuon->eta(), iMuon->phi(), 0.10566);
               double dimuon_M = (Muon_tmp + lvMuon).M();
@@ -449,7 +452,34 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
           }
         }
         if(Zmm) continue;
+
+        bool isMuonRec=false;
+        int n_muon_probe = 0;
+        for (reco::MuonCollection::const_iterator jMuon = _Muon->begin(); jMuon!= _Muon->end(); ++jMuon)  {
+         if(jMuon!=RecMuon && (jMuon->charge()!=RecMuon->charge()) && jMuon->innerTrack().isNonnull()){
+           const reco::Track* jpTrack = (jMuon->innerTrack()).get();
+           spr::propagatedTrackID jtrackID = spr::propagateCALO(jpTrack, geo, bField, (((verbosity_/100)%10>0)));
+           DetId jclosestCell(jtrackID.detIdHCAL);
+           HcalDetId jhcidt(jclosestCell.rawId());
+           if((jhcidt.ieta()==25 && ieta>0) || (jhcidt.ieta()==-25 && ieta<0)){
+               n_muon_probe++;
+               isMuonRec=true;
+               cGlob_probe_.push_back(jMuon->charge());
+               ptGlob_probe_.push_back(jMuon->pt());
+               etaGlob_probe_.push_back(jMuon->eta());
+               phiGlob_probe_.push_back(jMuon->phi());
+               energyMuon_probe_.push_back(jMuon->energy());
+               pMuon_probe_.push_back(jMuon->p());
+               muon_is_medium_probe_.push_back(muon::isMediumMuon(*jMuon));
+               isolationR04_probe_.push_back((jMuon->pfIsolationR04().sumChargedHadronPt + std::max(0.,jMuon->pfIsolationR04().sumNeutralHadronEt + jMuon->pfIsolationR04().sumPhotonEt - (0.5 *jMuon->pfIsolationR04().sumPUPt))) / jMuon->pt());
+           }
+          }
+        }
+
 	h_cutflow->Fill(1); // Zmm cut
+        //number of reconstructed muon in eta25               
+        n_muon_probe_.push_back(n_muon_probe);
+
         muon_is_good_.push_back(RecMuon->isPFMuon());
         muon_global_.push_back(RecMuon->isGlobalMuon());
         muon_tracker_.push_back(RecMuon->isTrackerMuon());
@@ -519,10 +549,10 @@ void HcalHBHEMuonAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSet
 #endif
 
         //check the opposite side of the detector
-        o_ieta = 26;
+        o_ieta = 25;
         o_iphi = iphi - 36;
         if(iphi<=36) o_iphi = iphi + 36;
-        if(ieta<0) o_ieta = -26;
+        if(ieta<0) o_ieta = -25;
           
         HcalSubdetector o_subdet = HcalEndcap;
         HcalDetId o_hcid0(o_subdet,o_ieta,o_iphi,1);
@@ -911,6 +941,17 @@ void HcalHBHEMuonAnalyzer::beginJob() {
   tree_->Branch("hcal_3into3",                      &hcalEnergy_);
   tree_->Branch("tracker_3into3",                   &hoEnergy_);
 
+  //saving the probe muon information if it is reconstructed
+  tree_->Branch("charge_of_muon_probe",             &cGlob_probe_);
+  tree_->Branch("pt_of_muon_probe",                 &ptGlob_probe_);
+  tree_->Branch("eta_of_muon_probe",                &etaGlob_probe_);
+  tree_->Branch("phi_of_muon_probe",                &phiGlob_probe_);
+  tree_->Branch("energy_of_muon_probe",             &energyMuon_probe_);
+  tree_->Branch("p_of_muon_probe",                  &pMuon_probe_);
+  tree_->Branch("isolationR04_probe",               &isolationR04_probe_);
+  tree_->Branch("MuonIsMedium_probe",               &muon_is_medium_probe_);
+  tree_->Branch("n_muon_probe",                     &n_muon_probe_);
+
   tree_->Branch("matchedId",                        &matchedId_);
   tree_->Branch("hcal_cellHot",                     &hcalHot_);
   tree_->Branch("hcal_cellHot_o",                   &o_hcalHot_);
@@ -1237,6 +1278,17 @@ void HcalHBHEMuonAnalyzer::clearVectors() {
   energyMuon_.clear();
   pMuon_.clear();
   muon_is_tight_.clear();
+
+  //ieta25
+  muon_is_medium_probe_.clear();
+  cGlob_probe_.clear();
+  ptGlob_probe_.clear();
+  etaGlob_probe_.clear();
+  phiGlob_probe_.clear();
+  energyMuon_probe_.clear();
+  pMuon_probe_.clear();
+  isolationR04_probe_.clear();
+  n_muon_probe_.clear();
 
   isolationR04_.clear();
   ecalEnergy_.clear();

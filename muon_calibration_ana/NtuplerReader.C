@@ -16,7 +16,6 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
    TFile* outputFile=TFile::Open(path+"/"+prefix+"_nvtx_sel"+nvtx_sel_Str+".root","recreate");
 
    TTree *tree = new TTree("tree","tree");
-
    double chg= -999., ecal1x1= -999., ecal3x3= -999.,ecal5x5= -999., ecal15x15= -999.,ecal25x25= -999., weight= -999., ISOR04= -999., p= -999., energy= -999., pt= -999., eta= -999., eEcal_o= -999., phi= -999., pt2= -999., eta2= -999., phi2= -999., e1dx= -999., e2dx= -999., e3dx= -999., e4dx= -999., e5dx= -999., e6dx= -999., e7dx= -999., e1= -999., e2= -999., e3= -999., e4= -999., e5= -999., e6= -999., e7= -999., e1_o = -999., e2_o = -999., e3_o = -999. , e4_o = -999., e5_o = -999., e6_o= -999. , e7_o = -999. ;
 
    vector<double> pt_genMuon,eta_genMuon,phi_genMuon,energy_genMuon;
@@ -31,6 +30,8 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 
    bool IsMuonRec = false;
    
+
+   e1s = 0, e2s = 0, e3s = 0, e4s = 0, e5s = 0, e6s = 0, e7s = 0;
    tree->Branch("run", &run, "run/I");
    tree->Branch("nvtx_good", &n_nvtx_good, "nvtx_good/I");
    tree->Branch("event", &event, "event/I");
@@ -198,7 +199,7 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	   for(int s =0; s<k;s++) sum_probe+=n_muon_probe->at(s);
 	   for(int pr=sum_probe;pr<sum_probe+n_muon_probe->at(k);pr++){
 	     if(pt_of_muon_probe->at(pr)!=pt && isolationR04_probe->at(pr)<0.25){
-	       //cout<<Event_No<<" "<<pt_of_muon_probe->at(pr)<<" "<<pt<<endl;
+	       cout<<Event_No<<" "<<pt_of_muon_probe->at(pr)<<" "<<pt<<endl;
 	       pt_probe.push_back(pt_of_muon_probe->at(pr));
 	       phi_probe.push_back(phi_of_muon_probe->at(pr));
 	       eta_probe.push_back(eta_of_muon_probe->at(pr));
