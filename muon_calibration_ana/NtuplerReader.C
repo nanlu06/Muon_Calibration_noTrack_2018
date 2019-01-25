@@ -171,7 +171,7 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	//for(int j = 0; j<nGenMuon; j ++){
 	//if((pt_of_genMuon-pt_of_muon
 	//}
-	if(Event_No==38) cout<<"pt"<<pt_of_muon->at(k)<<endl;
+	//if(Event_No==38) cout<<"pt"<<pt_of_muon->at(k)<<endl;
 	index.push_back(k);
       }
       if(index.size()>=2){
@@ -197,7 +197,6 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	run = Run_No;
 	   
 	event = Event_No;
-	if(event==38)cout<<event<<endl;
 	n_nvtx_good = GoodVertex;
 	weight = 1.0;
 	HCal_cellHot = hcal_cellHot->at(index[0]);
@@ -212,13 +211,13 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	p = p_of_muon->at(index[0]);
 	IsMuonRec = isMuonRec->at(index[0]);
 	nMuon_probe=n_muon_probe->at(index[0]);
-	if( event==38)cout<<n_muon_probe->at(index[0]);
+	//if( event==38)cout<<n_muon_probe->at(index[0]);
 	double sum_probe=0.;
 	for(int s =0; s<index[0];s++) sum_probe+=n_muon_probe->at(s);
-	if( event==38)cout<<sum_probe<<endl;
+	//if( event==38)cout<<sum_probe<<endl;
 	for(int pr=sum_probe;pr<sum_probe+n_muon_probe->at(index[0]);pr++){
 	  if(pt_of_muon_probe->at(pr)!=pt && isolationR04_probe->at(pr)<0.25){
-	    cout<<Event_No<<" "<<pt_of_muon_probe->at(pr)<<" "<<pt<<endl;
+	    //cout<<Event_No<<" "<<pt_of_muon_probe->at(pr)<<" "<<pt<<endl;
 	    pt_probe.push_back(pt_of_muon_probe->at(pr));
 	    phi_probe.push_back(phi_of_muon_probe->at(pr));
 	    eta_probe.push_back(eta_of_muon_probe->at(pr));
