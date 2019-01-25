@@ -134,14 +134,7 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
       // if (Cut(ientry) < 0) continue;
       //if(Event_No!=25221) continue;
       //else std::cout <<"find event==25221 "<<std::endl;
-      pt_probe.clear();
-      eta_probe.clear();
-      phi_probe.clear();
-      energy_probe.clear();
-      charge_probe.clear();
-      p_probe.clear();
-      ISOR04_probe.clear();
-      MuonIsMed_probe.clear();
+      
       pt_genMuon.clear();
       phi_genMuon.clear();
       eta_genMuon.clear();
@@ -155,9 +148,10 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	eta_genMuon.push_back(eta_of_genMuon->at(k));
 	energy_genMuon.push_back(energy_of_genMuon->at(k));
       }
-      //cout<<jentry<<" : "<<nmuon<<endl;
+      //cout<<"\n"<<jentry<<" : "<<nmuon<<endl;
       
-      
+      vector <int> index;
+      index.clear();
       for(int k = 0; k<nmuon; k ++){
 	if(nvtx_sel==-1){
 	  if((!(hcal_cellHot->at(k))) || (!(matchedId->at(k))) || (MuonIsTight->at(k)==0) || (IsolationR04->at(k)>=0.15) || /*(!(hcal_cellHot_o->at(k))) ||*/ (pt_of_muon->at(k))<20 ) continue;
@@ -167,76 +161,101 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	}
 	bool match1 = hcal_depthMatch1->at(k);
 	bool match2 = hcal_depthMatch2->at(k);
-           bool match3 = hcal_depthMatch3->at(k);
-           bool match4 = hcal_depthMatch4->at(k);
-           bool match5 = hcal_depthMatch5->at(k);
-           bool match6 = hcal_depthMatch6->at(k);
-           bool match7 = hcal_depthMatch7->at(k);
-           if(!(match1 && match2 && match3 && match4 && match5 && match6 && match7)) continue;
+	bool match3 = hcal_depthMatch3->at(k);
+	bool match4 = hcal_depthMatch4->at(k);
+	bool match5 = hcal_depthMatch5->at(k);
+	bool match6 = hcal_depthMatch6->at(k);
+	bool match7 = hcal_depthMatch7->at(k);
+	if(!(match1 && match2 && match3 && match4 && match5 && match6 && match7)) continue;
 
-	   //for(int j = 0; j<nGenMuon; j ++){
-	   //if((pt_of_genMuon-pt_of_muon
-	   //}
-           run = Run_No;
+	//for(int j = 0; j<nGenMuon; j ++){
+	//if((pt_of_genMuon-pt_of_muon
+	//}
+	if(Event_No==38) cout<<"pt"<<pt_of_muon->at(k)<<endl;
+	index.push_back(k);
+      }
+      if(index.size()>=2){
+	for (int i = 0; i < index.size()-1; i++){       
+	  for (int j = 0; j < index.size()-i-1; j++){  
+	    if (index[j] > index[j+1]){
+	      int temp = index[j]; 
+	      index[j] = index[j+1]; 
+	      index[j+1] = temp; 
+	    }
+	  }
+	}
+      }
+      if(index.size()){ //at least one tag moun
+	pt_probe.clear();
+	eta_probe.clear();
+	phi_probe.clear();
+	energy_probe.clear();
+	charge_probe.clear();
+	p_probe.clear();
+	ISOR04_probe.clear();
+	MuonIsMed_probe.clear();
+	run = Run_No;
 	   
-           event = Event_No;
-           //cout<<event<<endl;
- 	   n_nvtx_good = GoodVertex;
-           weight = 1.0;
-           HCal_cellHot = hcal_cellHot->at(k);
-           HCal_cellHot_o = hcal_cellHot_o->at(k);
-           tight1 = MuonIsTight->at(k); //istight->at(k);
-           ISOR04 = IsolationR04->at(k);
-           pt = pt_of_muon->at(k); 
-           phi = phi_of_muon->at(k); 
-           eta = eta_of_muon->at(k);
-           chg = charge_of_muon->at(k);
-           energy = energy_of_muon->at(k);
-           p = p_of_muon->at(k);
-	   IsMuonRec = isMuonRec->at(k);
-	   nMuon_probe=n_muon_probe->at(k);
-	   double sum_probe=0.;
-	   for(int s =0; s<k;s++) sum_probe+=n_muon_probe->at(s);
-	   for(int pr=sum_probe;pr<sum_probe+n_muon_probe->at(k);pr++){
-	     if(pt_of_muon_probe->at(pr)!=pt && isolationR04_probe->at(pr)<0.25){
-	       cout<<Event_No<<" "<<pt_of_muon_probe->at(pr)<<" "<<pt<<endl;
-	       pt_probe.push_back(pt_of_muon_probe->at(pr));
-	       phi_probe.push_back(phi_of_muon_probe->at(pr));
-	       eta_probe.push_back(eta_of_muon_probe->at(pr));
-	       energy_probe.push_back(energy_of_muon_probe->at(pr));
-	       charge_probe.push_back(charge_of_muon_probe->at(pr));
-	       p_probe.push_back(p_of_muon_probe->at(pr));
-	       ISOR04_probe.push_back(isolationR04_probe->at(pr));
-	       MuonIsMed_probe.push_back(MuonIsMedium_probe->at(pr));
-	     }
-	   }
-	   ecal1x1 = ecal_1x1->at(k);
-           ecal3x3 = ecal_3x3->at(k);
-           ecal5x5 = ecal_5x5->at(k);
-           ecal15x15 = ecal_15x15->at(k);
-           ecal25x25 = ecal_25x25->at(k);
-           eEcal_o  = eEcal->at(k);
-           Ecal_label_o  = Ecal_label->at(k);
-           HCal_iphi = hcal_iphi->at(k);
-           HCal_ieta = hcal_ieta->at(k);
-           HCal_iphi_o = hcal_iphi_o->at(k);
-           HCal_ieta_o = hcal_ieta_o->at(k);
+	event = Event_No;
+	if(event==38)cout<<event<<endl;
+	n_nvtx_good = GoodVertex;
+	weight = 1.0;
+	HCal_cellHot = hcal_cellHot->at(index[0]);
+	HCal_cellHot_o = hcal_cellHot_o->at(index[0]);
+	tight1 = MuonIsTight->at(index[0]); //istight->at(index[0]);
+	ISOR04 = IsolationR04->at(index[0]);
+	pt = pt_of_muon->at(index[0]); 
+	phi = phi_of_muon->at(index[0]); 
+	eta = eta_of_muon->at(index[0]);
+	chg = charge_of_muon->at(index[0]);
+	energy = energy_of_muon->at(index[0]);
+	p = p_of_muon->at(index[0]);
+	IsMuonRec = isMuonRec->at(index[0]);
+	nMuon_probe=n_muon_probe->at(index[0]);
+	if( event==38)cout<<n_muon_probe->at(index[0]);
+	double sum_probe=0.;
+	for(int s =0; s<index[0];s++) sum_probe+=n_muon_probe->at(s);
+	if( event==38)cout<<sum_probe<<endl;
+	for(int pr=sum_probe;pr<sum_probe+n_muon_probe->at(index[0]);pr++){
+	  if(pt_of_muon_probe->at(pr)!=pt && isolationR04_probe->at(pr)<0.25){
+	    cout<<Event_No<<" "<<pt_of_muon_probe->at(pr)<<" "<<pt<<endl;
+	    pt_probe.push_back(pt_of_muon_probe->at(pr));
+	    phi_probe.push_back(phi_of_muon_probe->at(pr));
+	    eta_probe.push_back(eta_of_muon_probe->at(pr));
+	    energy_probe.push_back(energy_of_muon_probe->at(pr));
+	    charge_probe.push_back(charge_of_muon_probe->at(pr));
+	    p_probe.push_back(p_of_muon_probe->at(pr));
+	    ISOR04_probe.push_back(isolationR04_probe->at(pr));
+	    MuonIsMed_probe.push_back(MuonIsMedium_probe->at(pr));
+	  }
+	}
+	ecal1x1 = ecal_1x1->at(index[0]);
+           ecal3x3 = ecal_3x3->at(index[0]);
+           ecal5x5 = ecal_5x5->at(index[0]);
+           ecal15x15 = ecal_15x15->at(index[0]);
+           ecal25x25 = ecal_25x25->at(index[0]);
+           eEcal_o  = eEcal->at(index[0]);
+           Ecal_label_o  = Ecal_label->at(index[0]);
+           HCal_iphi = hcal_iphi->at(index[0]);
+           HCal_ieta = hcal_ieta->at(index[0]);
+           HCal_iphi_o = hcal_iphi_o->at(index[0]);
+           HCal_ieta_o = hcal_ieta_o->at(index[0]);
 
-           e1 = hcal_edepth1->at(k);
-           e2 = hcal_edepth2->at(k);
-           e3 = hcal_edepth3->at(k);
-           e4 = hcal_edepth4->at(k);
-           e5 = hcal_edepth5->at(k);
-           e6 = hcal_edepth6->at(k);
-           e7 = hcal_edepth7->at(k);
+           e1 = hcal_edepth1->at(index[0]);
+           e2 = hcal_edepth2->at(index[0]);
+           e3 = hcal_edepth3->at(index[0]);
+           e4 = hcal_edepth4->at(index[0]);
+           e5 = hcal_edepth5->at(index[0]);
+           e6 = hcal_edepth6->at(index[0]);
+           e7 = hcal_edepth7->at(index[0]);
 
-           e1s  = (hcal_edepth11 ->at(k) + hcal_edepth21 ->at(k) + hcal_edepth31 ->at(k) + hcal_edepth41 ->at(k) + hcal_edepth51 ->at(k) + hcal_edepth61 ->at(k) + hcal_edepth71 ->at(k) + hcal_edepth81 ->at(k));
-           e2s  = (hcal_edepth12 ->at(k) + hcal_edepth22 ->at(k) + hcal_edepth32 ->at(k) + hcal_edepth42 ->at(k) + hcal_edepth52 ->at(k) + hcal_edepth62 ->at(k) + hcal_edepth72 ->at(k) + hcal_edepth82 ->at(k));
-           e3s  = (hcal_edepth13 ->at(k) + hcal_edepth23 ->at(k) + hcal_edepth33 ->at(k) + hcal_edepth43 ->at(k) + hcal_edepth53 ->at(k) + hcal_edepth63 ->at(k) + hcal_edepth73 ->at(k) + hcal_edepth83 ->at(k));
-           e4s  = (hcal_edepth14 ->at(k) + hcal_edepth24 ->at(k) + hcal_edepth34 ->at(k) + hcal_edepth44 ->at(k) + hcal_edepth54 ->at(k) + hcal_edepth64 ->at(k) + hcal_edepth74 ->at(k) + hcal_edepth84 ->at(k));
-           e5s  = (hcal_edepth15 ->at(k) + hcal_edepth25 ->at(k) + hcal_edepth35 ->at(k) + hcal_edepth45 ->at(k) + hcal_edepth55 ->at(k) + hcal_edepth65 ->at(k) + hcal_edepth75 ->at(k) + hcal_edepth85 ->at(k));
-           e6s  = (hcal_edepth16 ->at(k) + hcal_edepth26 ->at(k) + hcal_edepth36 ->at(k) + hcal_edepth46 ->at(k) + hcal_edepth56 ->at(k) + hcal_edepth66 ->at(k) + hcal_edepth76 ->at(k) + hcal_edepth86 ->at(k));
-           e7s  = (hcal_edepth17 ->at(k) + hcal_edepth27 ->at(k) + hcal_edepth37 ->at(k) + hcal_edepth47 ->at(k) + hcal_edepth57 ->at(k) + hcal_edepth67 ->at(k) + hcal_edepth77 ->at(k) + hcal_edepth87 ->at(k));
+           e1s  = (hcal_edepth11 ->at(index[0]) + hcal_edepth21 ->at(index[0]) + hcal_edepth31 ->at(index[0]) + hcal_edepth41 ->at(index[0]) + hcal_edepth51 ->at(index[0]) + hcal_edepth61 ->at(index[0]) + hcal_edepth71 ->at(index[0]) + hcal_edepth81 ->at(index[0]));
+           e2s  = (hcal_edepth12 ->at(index[0]) + hcal_edepth22 ->at(index[0]) + hcal_edepth32 ->at(index[0]) + hcal_edepth42 ->at(index[0]) + hcal_edepth52 ->at(index[0]) + hcal_edepth62 ->at(index[0]) + hcal_edepth72 ->at(index[0]) + hcal_edepth82 ->at(index[0]));
+           e3s  = (hcal_edepth13 ->at(index[0]) + hcal_edepth23 ->at(index[0]) + hcal_edepth33 ->at(index[0]) + hcal_edepth43 ->at(index[0]) + hcal_edepth53 ->at(index[0]) + hcal_edepth63 ->at(index[0]) + hcal_edepth73 ->at(index[0]) + hcal_edepth83 ->at(index[0]));
+           e4s  = (hcal_edepth14 ->at(index[0]) + hcal_edepth24 ->at(index[0]) + hcal_edepth34 ->at(index[0]) + hcal_edepth44 ->at(index[0]) + hcal_edepth54 ->at(index[0]) + hcal_edepth64 ->at(index[0]) + hcal_edepth74 ->at(index[0]) + hcal_edepth84 ->at(index[0]));
+           e5s  = (hcal_edepth15 ->at(index[0]) + hcal_edepth25 ->at(index[0]) + hcal_edepth35 ->at(index[0]) + hcal_edepth45 ->at(index[0]) + hcal_edepth55 ->at(index[0]) + hcal_edepth65 ->at(index[0]) + hcal_edepth75 ->at(index[0]) + hcal_edepth85 ->at(index[0]));
+           e6s  = (hcal_edepth16 ->at(index[0]) + hcal_edepth26 ->at(index[0]) + hcal_edepth36 ->at(index[0]) + hcal_edepth46 ->at(index[0]) + hcal_edepth56 ->at(index[0]) + hcal_edepth66 ->at(index[0]) + hcal_edepth76 ->at(index[0]) + hcal_edepth86 ->at(index[0]));
+           e7s  = (hcal_edepth17 ->at(index[0]) + hcal_edepth27 ->at(index[0]) + hcal_edepth37 ->at(index[0]) + hcal_edepth47 ->at(index[0]) + hcal_edepth57 ->at(index[0]) + hcal_edepth67 ->at(index[0]) + hcal_edepth77 ->at(index[0]) + hcal_edepth87 ->at(index[0]));
 
            e1r  = e1s/e1 ;
            e12r  =( e1s+e2s)/e1 ;
@@ -249,21 +268,21 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
            e6r  = e6s/e6 ;
            e7r  = e7s/e7 ;
 
-           e1_o = hcal_edepth1_o->at(k);
-           e2_o = hcal_edepth2_o->at(k);
-           e3_o = hcal_edepth3_o->at(k);
-           e4_o = hcal_edepth4_o->at(k);
-           e5_o = hcal_edepth5_o->at(k);
-           e6_o = hcal_edepth6_o->at(k);
-           e7_o = hcal_edepth7_o->at(k);
+           e1_o = hcal_edepth1_o->at(index[0]);
+           e2_o = hcal_edepth2_o->at(index[0]);
+           e3_o = hcal_edepth3_o->at(index[0]);
+           e4_o = hcal_edepth4_o->at(index[0]);
+           e5_o = hcal_edepth5_o->at(index[0]);
+           e6_o = hcal_edepth6_o->at(index[0]);
+           e7_o = hcal_edepth7_o->at(index[0]);
 
-           e1s_o = (hcal_edepth11_o->at(k) + hcal_edepth21_o->at(k) + hcal_edepth31_o->at(k) + hcal_edepth41_o->at(k) + hcal_edepth51_o->at(k) + hcal_edepth61_o->at(k) + hcal_edepth71_o->at(k) + hcal_edepth81_o->at(k));
-           e2s_o = (hcal_edepth12_o->at(k) + hcal_edepth22_o->at(k) + hcal_edepth32_o->at(k) + hcal_edepth42_o->at(k) + hcal_edepth52_o->at(k) + hcal_edepth62_o->at(k) + hcal_edepth72_o->at(k) + hcal_edepth82_o->at(k));
-           e3s_o = (hcal_edepth13_o->at(k) + hcal_edepth23_o->at(k) + hcal_edepth33_o->at(k) + hcal_edepth43_o->at(k) + hcal_edepth53_o->at(k) + hcal_edepth63_o->at(k) + hcal_edepth73_o->at(k) + hcal_edepth83_o->at(k));
-           e4s_o = (hcal_edepth14_o->at(k) + hcal_edepth24_o->at(k) + hcal_edepth34_o->at(k) + hcal_edepth44_o->at(k) + hcal_edepth54_o->at(k) + hcal_edepth64_o->at(k) + hcal_edepth74_o->at(k) + hcal_edepth84_o->at(k));
-           e5s_o = (hcal_edepth15_o->at(k) + hcal_edepth25_o->at(k) + hcal_edepth35_o->at(k) + hcal_edepth45_o->at(k) + hcal_edepth55_o->at(k) + hcal_edepth65_o->at(k) + hcal_edepth75_o->at(k) + hcal_edepth85_o->at(k));
-           e6s_o = (hcal_edepth16_o->at(k) + hcal_edepth26_o->at(k) + hcal_edepth36_o->at(k) + hcal_edepth46_o->at(k) + hcal_edepth56_o->at(k) + hcal_edepth66_o->at(k) + hcal_edepth76_o->at(k) + hcal_edepth86_o->at(k));
-           e7s_o = (hcal_edepth17_o->at(k) + hcal_edepth27_o->at(k) + hcal_edepth37_o->at(k) + hcal_edepth47_o->at(k) + hcal_edepth57_o->at(k) + hcal_edepth67_o->at(k) + hcal_edepth77_o->at(k) + hcal_edepth87_o->at(k));
+           e1s_o = (hcal_edepth11_o->at(index[0]) + hcal_edepth21_o->at(index[0]) + hcal_edepth31_o->at(index[0]) + hcal_edepth41_o->at(index[0]) + hcal_edepth51_o->at(index[0]) + hcal_edepth61_o->at(index[0]) + hcal_edepth71_o->at(index[0]) + hcal_edepth81_o->at(index[0]));
+           e2s_o = (hcal_edepth12_o->at(index[0]) + hcal_edepth22_o->at(index[0]) + hcal_edepth32_o->at(index[0]) + hcal_edepth42_o->at(index[0]) + hcal_edepth52_o->at(index[0]) + hcal_edepth62_o->at(index[0]) + hcal_edepth72_o->at(index[0]) + hcal_edepth82_o->at(index[0]));
+           e3s_o = (hcal_edepth13_o->at(index[0]) + hcal_edepth23_o->at(index[0]) + hcal_edepth33_o->at(index[0]) + hcal_edepth43_o->at(index[0]) + hcal_edepth53_o->at(index[0]) + hcal_edepth63_o->at(index[0]) + hcal_edepth73_o->at(index[0]) + hcal_edepth83_o->at(index[0]));
+           e4s_o = (hcal_edepth14_o->at(index[0]) + hcal_edepth24_o->at(index[0]) + hcal_edepth34_o->at(index[0]) + hcal_edepth44_o->at(index[0]) + hcal_edepth54_o->at(index[0]) + hcal_edepth64_o->at(index[0]) + hcal_edepth74_o->at(index[0]) + hcal_edepth84_o->at(index[0]));
+           e5s_o = (hcal_edepth15_o->at(index[0]) + hcal_edepth25_o->at(index[0]) + hcal_edepth35_o->at(index[0]) + hcal_edepth45_o->at(index[0]) + hcal_edepth55_o->at(index[0]) + hcal_edepth65_o->at(index[0]) + hcal_edepth75_o->at(index[0]) + hcal_edepth85_o->at(index[0]));
+           e6s_o = (hcal_edepth16_o->at(index[0]) + hcal_edepth26_o->at(index[0]) + hcal_edepth36_o->at(index[0]) + hcal_edepth46_o->at(index[0]) + hcal_edepth56_o->at(index[0]) + hcal_edepth66_o->at(index[0]) + hcal_edepth76_o->at(index[0]) + hcal_edepth86_o->at(index[0]));
+           e7s_o = (hcal_edepth17_o->at(index[0]) + hcal_edepth27_o->at(index[0]) + hcal_edepth37_o->at(index[0]) + hcal_edepth47_o->at(index[0]) + hcal_edepth57_o->at(index[0]) + hcal_edepth67_o->at(index[0]) + hcal_edepth77_o->at(index[0]) + hcal_edepth87_o->at(index[0]));
 
            e1r_o = e1s_o/e1_o;
            e12r_o =( e1s_o+e2s_o)/e1_o;
@@ -280,6 +299,7 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	   //cout<<"Finished\n";
       }
    }
+
    outputFile->cd();
    tree->Write();
    outputFile->Close();
