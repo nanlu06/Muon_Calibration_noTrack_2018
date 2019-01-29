@@ -167,17 +167,18 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	bool match6 = hcal_depthMatch6->at(k);
 	bool match7 = hcal_depthMatch7->at(k);
 	if(!(match1 && match2 && match3 && match4 && match5 && match6 && match7)) continue;
-
+	
 	//for(int j = 0; j<nGenMuon; j ++){
 	//if((pt_of_genMuon-pt_of_muon
 	//}
 	//if(Event_No==38) cout<<"pt"<<pt_of_muon->at(k)<<endl;
 	index.push_back(k);
       }
+      //====================arrange the index array according to tag muon pt ===========================================
       if(index.size()>=2){
 	for (int i = 0; i < index.size()-1; i++){       
 	  for (int j = 0; j < index.size()-i-1; j++){  
-	    if (index[j] > index[j+1]){
+	    if (pt_of_muon->at(index[j+1]) > pt_of_muon->at(index[j])){
 	      int temp = index[j]; 
 	      index[j] = index[j+1]; 
 	      index[j+1] = temp; 
@@ -186,6 +187,7 @@ void NtuplerReader::Loop( TString path, TString prefix, int nvtx_sel )
 	}
       }
       if(index.size()){ //at least one tag moun
+	//cout<<"Event No: "<<Event_No<<endl;
 	pt_probe.clear();
 	eta_probe.clear();
 	phi_probe.clear();
