@@ -1,4 +1,2 @@
-[0m[38;5;27mlog[0m
-Validation_1.root
-Validation_2.root
-[m
+root://cms-xrd-global.cern.ch///store/group/dpg_hcal/comm_hcal/nlu/SingleMuon/Run2018B-HcalCalHBHEMuonFilter-PromptReco-v1_ieta26_Oct22_v2/181022_103851/0000/Validation_1.root
+root://cms-xrd-global.cern.ch///store/group/dpg_hcal/comm_hcal/nlu/SingleMuon/Run2018B-HcalCalHBHEMuonFilter-PromptReco-v1_ieta26_Oct22_v2/181022_103851/0000/Validation_2.root

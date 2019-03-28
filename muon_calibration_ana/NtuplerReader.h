@@ -45,6 +45,15 @@ public :
    vector<double>  *phi_of_muon;
    vector<double>  *energy_of_muon;
    vector<double>  *p_of_muon;
+   vector<bool>    *MuonIsMedium_probe;
+   vector<double>  *charge_of_muon_probe;
+   vector<double>  *pt_of_muon_probe;
+   vector<double>  *eta_of_muon_probe;
+   vector<double>  *phi_of_muon_probe;
+   vector<double>  *energy_of_muon_probe;
+   vector<double>  *p_of_muon_probe;
+   vector<double>  *isolationR04_probe;
+   vector<int>     *n_muon_probe;
    vector<float>   *muon_trkKink;
    vector<float>   *muon_chi2LocalPosition;
    vector<float>   *muon_segComp;
@@ -98,6 +107,7 @@ public :
    vector<unsigned int> *ehcal_detID;
    vector<int>     *hcal_ieta;
    vector<int>     *hcal_iphi;
+   vector<bool>    *isMuonRec;
    vector<double>  *hcal_edepthuncalibrated1;
    vector<double>  *hcal_ndepth1;
    vector<double>  *hcal_edepth11;
@@ -337,6 +347,15 @@ public :
    TBranch        *b_phi_of_muon;   //!
    TBranch        *b_energy_of_muon;   //!
    TBranch        *b_p_of_muon;   //!
+   TBranch        *b_MuonIsMedium_probe;   //!
+   TBranch        *b_charge_of_muon_probe;   //!
+   TBranch        *b_pt_of_muon_probe;   //!
+   TBranch        *b_eta_of_muon_probe;   //!
+   TBranch        *b_phi_of_muon_probe;   //!
+   TBranch        *b_energy_of_muon_probe;   //!
+   TBranch        *b_p_of_muon_probe;   //!
+   TBranch        *b_isolationR04_probe;
+   TBranch        *b_n_muon_probe;
    TBranch        *b_muon_trkKink;   //!
    TBranch        *b_muon_chi2LocalPosition;   //!
    TBranch        *b_muon_segComp;   //!
@@ -390,6 +409,7 @@ public :
    TBranch        *b_ehcal_detID;   //!
    TBranch        *b_hcal_ieta;   //!
    TBranch        *b_hcal_iphi;   //!
+   TBranch        *b_isMuonRec;
    TBranch        *b_hcal_edepthuncalibrated1;   //!
    TBranch        *b_hcal_ndepth1;   //!
    TBranch        *b_hcal_edepth11;   //!
@@ -738,6 +758,7 @@ void NtuplerReader::Init(TTree *tree)
    ehcal_detID = 0;
    hcal_ieta = 0;
    hcal_iphi = 0;
+   isMuonRec = 0;
    hcal_edepthuncalibrated1 = 0;
    hcal_ndepth1 = 0;
    hcal_edepth11 = 0;
@@ -981,6 +1002,15 @@ void NtuplerReader::Init(TTree *tree)
    fChain->SetBranchAddress("phi_of_muon", &phi_of_muon, &b_phi_of_muon);
    fChain->SetBranchAddress("energy_of_muon", &energy_of_muon, &b_energy_of_muon);
    fChain->SetBranchAddress("p_of_muon", &p_of_muon, &b_p_of_muon);
+   fChain->SetBranchAddress("MuonIsMedium_probe", &MuonIsMedium_probe, &b_MuonIsMedium_probe);
+   fChain->SetBranchAddress("charge_of_muon_probe", &charge_of_muon_probe, &b_charge_of_muon_probe);
+   fChain->SetBranchAddress("pt_of_muon_probe", &pt_of_muon_probe, &b_pt_of_muon_probe);
+   fChain->SetBranchAddress("eta_of_muon_probe", &eta_of_muon_probe, &b_eta_of_muon_probe);
+   fChain->SetBranchAddress("phi_of_muon_probe", &phi_of_muon_probe, &b_phi_of_muon_probe);
+   fChain->SetBranchAddress("energy_of_muon_probe", &energy_of_muon_probe, &b_energy_of_muon_probe);
+   fChain->SetBranchAddress("p_of_muon_probe", &p_of_muon_probe, &b_p_of_muon_probe);
+   fChain->SetBranchAddress("isolationR04_probe",&isolationR04_probe,&b_isolationR04_probe);
+   fChain->SetBranchAddress("n_muon_probe",&n_muon_probe,&b_n_muon_probe);
    fChain->SetBranchAddress("muon_trkKink", &muon_trkKink, &b_muon_trkKink);
    fChain->SetBranchAddress("muon_chi2LocalPosition", &muon_chi2LocalPosition, &b_muon_chi2LocalPosition);
    fChain->SetBranchAddress("muon_segComp", &muon_segComp, &b_muon_segComp);
@@ -1034,6 +1064,7 @@ void NtuplerReader::Init(TTree *tree)
    fChain->SetBranchAddress("ehcal_detID", &ehcal_detID, &b_ehcal_detID);
    fChain->SetBranchAddress("hcal_ieta", &hcal_ieta, &b_hcal_ieta);
    fChain->SetBranchAddress("hcal_iphi", &hcal_iphi, &b_hcal_iphi);
+   fChain->SetBranchAddress("isMuonRec", &isMuonRec, &b_isMuonRec);
    fChain->SetBranchAddress("hcal_edepthuncalibrated1", &hcal_edepthuncalibrated1, &b_hcal_edepthuncalibrated1);
    fChain->SetBranchAddress("hcal_ndepth1", &hcal_ndepth1, &b_hcal_ndepth1);
    fChain->SetBranchAddress("hcal_edepth11", &hcal_edepth11, &b_hcal_edepth11);
