@@ -14,3 +14,17 @@ How to run:
 and then ./runCrab.sh
 
 resubmit failed jobs: resubmit.sh
+
+
+March 28, 2019:
+
+HcalHBHEMuonAnalyzer_March282019.cc
+
+rename it to HcalHBHEMuonAnalyzer.cc if you want to use it.
+The cuts are with new veto Zmm cuts to remove more Zmm bkg. The new cuts are:
+
+Additional muon is present which is oppositely charged w.r.t. the tag muon,  pt > 20 GeV, |η| < 2.5 but not in |ieta25|, Loose ID (by default, all nanoAOD muons are loose muons), Rel Iso <0.25 and |dimuon_mass-91.18| < 4.
+
+old cuts are:
+
+Additional muon is present which is oppositely charged w.r.t. the tag muon,  pt > 20 GeV, |η| < 2.5 but not in |ieta25|, Medium ID, Rel Iso <0.15 and |dimuon_mass-91.18| < 2.
